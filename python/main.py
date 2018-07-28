@@ -42,8 +42,6 @@ def readIn():
 			return line;
 		else:
 			return false;
-def sendStatus():
-	return;
 # MAIN
 
 print("Ready.");
@@ -55,8 +53,6 @@ while 1:
 	if stdin:
 		if stdin["_type"] == "control":
 			control = stdin;
-		else if stdin["_type"] == "request":
-			sendStatus();
 
 	# Instruct drone limbs
 	setAll(control["throttle"]);
