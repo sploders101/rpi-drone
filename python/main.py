@@ -16,11 +16,10 @@ import sys,select,time,json;
 # INITIALIZATION
 drone = Adafruit_PCA9685.PCA9685();
 sense = SenseHat();
-class initialControl:
-	throttle = 0.0,
-	x = 0.0,
-	y = 0.0
-control = initialControl();
+control = {};
+control["throttle"] = 0.085,
+control["x"] = 0.0,
+control["y"] = 0.0
 
 # DRONE FUNCTIONS
 def setSpeedPercentage(channel, speed): # channel (0..4), speed (0..1)
