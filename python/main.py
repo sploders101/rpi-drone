@@ -53,3 +53,4 @@ while 1:
 	# Drone instruction
 	print(control);
 	setAll(control["throttle"]);
+	time.sleep(0.001);
