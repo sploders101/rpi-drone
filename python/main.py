@@ -32,7 +32,7 @@ def setAll(throttle):
 
 # STANDARD FUNCTIONS
 def readIn():
-	lines = input();
+	lines = raw_input();
 	return lines;
 # MAIN
 while True:
