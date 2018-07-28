@@ -23,11 +23,11 @@ let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir}
 fc.stdout.setEncoding("ascii");
 fc.stdout.on("data",(data) => { //Input from python script
 	if(data == "Ready.\n") { //When python reports it is ready...
-		fc.stdin.write(JSON.stringify(control)+"\n"); //Send the current state of control
+		sendControl(); //Send the current state of control
 	}
 });
 function sendControl() {
-	fc.stdin.write(json.stringify(control)+"\n");
+	fc.stdin.write(JSON.stringify(control)+"\n");
 }
 
 // SETUP STEAM CONTROLLER INPUT
