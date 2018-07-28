@@ -10,8 +10,9 @@ let control = {
 	y: 0,
 	throttle: 0.085
 };
-fc.stdout.pipe(process.stdout);
 
-setTimeout(() => {
-	fc.stdin.write(JSON.stringify(control)+"\n");
-},3000);
+fc.stdout.on("data",(data) => {
+	if(data == "Ready.\n") {
+		fc.stdin.write(JSON.stringify(control)+"\n");
+	}
+});
