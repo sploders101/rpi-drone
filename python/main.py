@@ -37,3 +37,4 @@ def readIn():
 # MAIN
 while True:
 	print(readIn());
+	print("iteration");
