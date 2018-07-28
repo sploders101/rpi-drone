@@ -26,7 +26,7 @@ fc.stdout.on("data",(data) => { //Input from python script
 	if(data == "Ready.\n") { //When python reports it is ready...
 		sendControl(); //Send the current state of control
 	} else if(data == "Shutdown.\n") { //When python says it's time to shutdown...
-		execSync("shutdown -h now"]);
+		execSync("shutdown -h now");
 	}
 });
 function sendControl() {
