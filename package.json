@@ -1,0 +1,19 @@
+{
+  "name": "rpi-drone",
+  "version": "1.0.0",
+  "description": "This is the software for the drone that I am building from scratch using a raspberry pi",
+  "main": "node/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sploders101/rpi-drone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sploders101/rpi-drone/issues"
+  },
+  "homepage": "https://github.com/sploders101/rpi-drone#readme"
+}
