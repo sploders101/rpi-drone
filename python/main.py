@@ -38,5 +38,5 @@ def readIn():
 	else:
 		return "NULL";
 # MAIN
-while true:
+while True:
 	print(readIn());
