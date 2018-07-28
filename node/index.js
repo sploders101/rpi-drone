@@ -13,5 +13,5 @@ let control = {
 fc.stdout.pipe(process.stdout);
 
 setTimeout(() => {
-	fc.stdin.write(JSON.stringify(control));
+	fc.stdin.write(JSON.stringify(control)+"\n");
 },3000);
