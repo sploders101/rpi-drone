@@ -17,7 +17,7 @@ import sys,select,time,json;
 drone = Adafruit_PCA9685.PCA9685();
 sense = SenseHat();
 control = {};
-control["throttle"] = 0.085;
+control["throttle"] = 0.0;
 control["x"] = 0.0;
 control["y"] = 0.0;
 
@@ -51,6 +51,6 @@ while 1:
 		control = stdin;
 
 	# Drone instruction
-	print(control);
+	# print(control);
 	setAll(control["throttle"]);
 	time.sleep(0.001);
