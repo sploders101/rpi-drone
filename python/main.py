@@ -51,4 +51,5 @@ while 1:
 		control = stdin;
 
 	# Drone instruction
+	print(control);
 	setAll(control["throttle"]);
