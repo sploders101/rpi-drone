@@ -1,7 +1,7 @@
 //NOTE: Higher-level computing for drone control
 
 // IMPORTS
-let {spawn,execSync} = require("child_process").spawn;
+let {spawn,execSync} = require("child_process");
 let path = require("path");
 let SteamController = require("node-steam-controller");
 
