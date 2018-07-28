@@ -31,7 +31,7 @@ def setOutput(speeds):
 		drone.set_pwm(motor, 0, int( speed*sMultiplier + smin ) );
 		motor += 1;
 def setAll(throttle):
-	print(int( throttle*sMultiplier + smin ));
+	# print(int( throttle*sMultiplier + smin ));
 	drone.set_all_pwm(0,int( throttle*sMultiplier + smin ));
 
 # STANDARD FUNCTIONS
