@@ -44,6 +44,9 @@ def readIn():
 			return false;
 
 # MAIN
+
+print("Ready.");
+
 while 1:
 	# Accept changes
 	stdin = readIn();
