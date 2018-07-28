@@ -32,10 +32,12 @@ function sendControl() {
 }
 
 // SETUP STEAM CONTROLLER INPUT
-sc.lpad.on("touch",(data) => {
-	console.log(data);
+sc.lpad.on("touch",() => {
 	control.throttle = 0.085;
 	sendControl();
+});
+sc.lpad.on("move",(e) => {
+	console.log(e);
 });
 sc.lpad.on("untouch",() => {
 	control.throttle = 0;
