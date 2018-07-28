@@ -1,14 +1,22 @@
 //NOTE: Higher-level computing for drone control
+
+// IMPORTS
 let spawn = require("child_process").spawn;
 let path = require("path");
-let projectDir = path.join(__dirname,"..");
+let SteamController = require("node-steam-controller");
 
+// SPAWN PYTHON SUBSYSTEM ON CORE 3
 let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
 
+// INITIALIZE VARS
+let projectDir = path.join(__dirname,"..");
+let sc = new SteamController();
 let control = {
+	_type: "control",
 	x: 0,
 	y: 0,
-	throttle: 0.085
+	r: 0,
+	throttle: 0
 };
 
 // SETUP PYTHON IPC
