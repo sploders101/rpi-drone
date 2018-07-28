@@ -46,6 +46,7 @@ def readIn():
 # MAIN
 
 print("Ready.");
+sys.stdout.flush();
 
 while 1:
 	# Accept changes
