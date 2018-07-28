@@ -9,37 +9,47 @@ sMultiplier = smax-smin;
 
 # IMPORTS
 import quad_stablizer;
-# import Adafruit_PCA9685;
-# from sense_hat import SenseHat;
+import Adafruit_PCA9685;
+from sense_hat import SenseHat;
 import sys,select,time,json;
 
 # INITIALIZATION
-# drone = Adafruit_PCA9685.PCA9685();
-# sense = SenseHat();
+drone = Adafruit_PCA9685.PCA9685();
+sense = SenseHat();
+class initialControl:
+	throttle = 1.0,
+	x = 0.0,
+	y = 0.0
+control = initialControl();
 
 # DRONE FUNCTIONS
-# def setSpeedPercentage(channel, speed): # channel (0..4), speed (0..1)
-# 	pulseWidth = (speed*(smax-smin)) + smin;
-# 	drone.set_pwm(channel,0,int(pulseWidth));
-# def setOutput(speeds):
-# 	motor = 0;
-# 	for speed in speeds:
-# 		drone.set_pwm(motor, 0, int( speed*sMultiplier + smin ) );
-# 		motor += 1;
-# def setAll(throttle):
-# 	print(int( throttle*sMultiplier + smin ));
-# 	drone.set_all_pwm(0,int( throttle*sMultiplier + smin ));
+def setSpeedPercentage(channel, speed): # channel (0..4), speed (0..1)
+	pulseWidth = (speed*(smax-smin)) + smin;
+	drone.set_pwm(channel,0,int(pulseWidth));
+def setOutput(speeds):
+	motor = 0;
+	for speed in speeds:
+		drone.set_pwm(motor, 0, int( speed*sMultiplier + smin ) );
+		motor += 1;
+def setAll(throttle):
+	print(int( throttle*sMultiplier + smin ));
+	drone.set_all_pwm(0,int( throttle*sMultiplier + smin ));
 
 # STANDARD FUNCTIONS
 def readIn():
 	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-		line = sys.stdin.readline();
+		line = json.loads(sys.stdin.readline());
 		if line:
-			print(line);
-		# else:
-		# 	setAll(0);
+			return line;
+		else:
+			return false;
 
 # MAIN
 while 1:
-	readIn();
-	print("iteration");
+	# Accept changes
+	stdin = readIn();
+	if stdin:
+		control = stdin;
+
+	# Drone instruction
+	setAll(control.throttle);
