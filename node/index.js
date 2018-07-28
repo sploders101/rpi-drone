@@ -20,6 +20,7 @@ let control = {
 let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
 
 // SETUP PYTHON IPC
+fc.stdout.pipe(process.stdout);
 fc.stdout.setEncoding("ascii");
 fc.stdout.on("data",(data) => { //Input from python script
 	if(data == "Ready.\n") { //When python reports it is ready...
