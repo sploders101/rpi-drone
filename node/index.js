@@ -11,10 +11,10 @@ let control = {
 	throttle: 0.085
 };
 
+// SETUP PYTHON IPC
 fc.stdout.setEncoding("ascii");
-fc.stdout.on("data",(data) => {
-	console.log(data);
-	if(data == "Ready.\n") {
-		fc.stdin.write(JSON.stringify(control)+"\n");
+fc.stdout.on("data",(data) => { //Input from python script
+	if(data == "Ready.\n") { //When python reports it is ready...
+		fc.stdin.write(JSON.stringify(control)+"\n"); //Send the current state of control
 	}
 });
