@@ -33,10 +33,7 @@ def setAll(throttle):
 # STANDARD FUNCTIONS
 def readIn():
 	lines = input();
-	if lines != null:
-		return lines;
-	else:
-		return "NULL";
+	return lines;
 # MAIN
 while True:
 	print(readIn());
