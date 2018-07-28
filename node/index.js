@@ -3,7 +3,7 @@ let spawn = require("child_process").spawn;
 let path = require("path");
 let projectDir = path.join(__dirname,"..");
 
-let fc = spawn("python3",["python/main.py"],{cwd: projectDir});
+let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
 
 let control = {
 	x: 0,
