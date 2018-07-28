@@ -42,19 +42,22 @@ def readIn():
 			return line;
 		else:
 			return false;
-
+def sendStatus():
+	return;
 # MAIN
 
 print("Ready.");
 sys.stdout.flush();
 
 while 1:
-	# Accept changes
+	# Handle incoming messages
 	stdin = readIn();
 	if stdin:
-		control = stdin;
+		if stdin["_type"] == "control":
+			control = stdin;
+		else if stdin["_type"] == "request":
+			sendStatus();
 
-	# Drone instruction
-	# print(control);
+	# Instruct drone limbs
 	setAll(control["throttle"]);
 	time.sleep(0.001);
