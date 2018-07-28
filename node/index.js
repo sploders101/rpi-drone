@@ -1,7 +1,7 @@
 //NOTE: Higher-level computing for drone control
 
 // IMPORTS
-let {spawn,execSync} = require("child_process");
+let {spawn} = require("child_process");
 let path = require("path");
 let SteamController = require("node-steam-controller");
 
@@ -26,7 +26,7 @@ fc.stdout.on("data",(data) => { //Input from python script
 	if(data == "Ready.\n") { //When python reports it is ready...
 		sendControl(); //Send the current state of control
 	} else if(data == "Shutdown.\n") { //When python says it's time to shutdown...
-		execSync("shutdown -h now");
+		spawn("shutdown",["-h","now"]);
 	}
 });
 function sendControl() {
