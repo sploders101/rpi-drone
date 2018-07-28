@@ -11,8 +11,8 @@ let control = {
 	throttle: 0.085
 };
 
+fc.stdout.setEncoding("ascii");
 fc.stdout.on("data",(data) => {
-	data = String(data);
 	console.log(data);
 	if(data == "Ready.\n") {
 		fc.stdin.write(JSON.stringify(control)+"\n");
