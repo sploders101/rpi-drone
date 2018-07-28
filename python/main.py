@@ -8,7 +8,7 @@ smax = 1900.0;
 sMultiplier = smax-smin;
 
 # IMPORTS
-import quad_stablizer.py;
+import quad_stablizer;
 # import Adafruit_PCA9685;
 # from sense_hat import SenseHat;
 import sys,select,time,json;
