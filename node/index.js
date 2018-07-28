@@ -40,4 +40,5 @@ sc.lpad.on("touch",(data) => {
 sc.lpad.on("untouch",() => {
 	control.throttle = 0;
 	sendControl();
-})
+});
+controller.connect();
