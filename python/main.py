@@ -40,6 +40,6 @@ def readIn():
 		# 	setAll(0);
 
 # MAIN
-while true:
+while 1:
 	readIn();
 	print("iteration");
