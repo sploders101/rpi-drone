@@ -42,6 +42,7 @@ sc.lpad.on("move",(e) => {
 	} else {
 		control.throttle = e.normy/2+0.5;
 	}
+	sendControl();
 });
 sc.lpad.on("untouch",() => {
 	control.throttle = 0;
