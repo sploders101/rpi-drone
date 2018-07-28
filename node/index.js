@@ -37,10 +37,10 @@ sc.lpad.on("touch",() => {
 	sendControl();
 });
 sc.lpad.on("move",(e) => {
-	if(normy/2+0.5 < 0.085) {
+	if(e.normy/2+0.5 < 0.085) {
 		control.throttle = 0.085;
 	} else {
-		control.throttle = normy/2+0.5;
+		control.throttle = e.normy/2+0.5;
 	}
 });
 sc.lpad.on("untouch",() => {
