@@ -18,11 +18,11 @@ let control = {
 
 // SPAWN PYTHON SUBSYSTEM ON CORE 3
 let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
-
+console.log("Spawned subsystem");
 // SETUP PYTHON IPC
-fc.stdout.pipe(process.stdout);
 fc.stdout.setEncoding("ascii");
 fc.stdout.on("data",(data) => { //Input from python script
+	console.log(data);
 	if(data == "Ready.\n") { //When python reports it is ready...
 		sendControl(); //Send the current state of control
 	}
