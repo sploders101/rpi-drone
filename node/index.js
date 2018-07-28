@@ -11,4 +11,7 @@ let control = {
 	throttle: 0.085
 };
 fc.stdout.pipe(process.stdout);
-fc.stdin.write(JSON.stringify(control));
+
+setTimeout(() => {
+	fc.stdin.write(JSON.stringify(control));
+},3000);
