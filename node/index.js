@@ -18,3 +18,16 @@ fc.stdout.on("data",(data) => { //Input from python script
 		fc.stdin.write(JSON.stringify(control)+"\n"); //Send the current state of control
 	}
 });
+function sendControl() {
+	fc.stdin.write(json.stringify(control)+"\n");
+}
+
+// SETUP STEAM CONTROLLER INPUT
+sc.lpad.on("touch",() => {
+	control.throttle = 0.085;
+	sendControl();
+});
+sc.lpad.on("untouch",() => {
+	control.throttle = 0;
+	sendControl();
+})
