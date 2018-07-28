@@ -10,5 +10,5 @@ let control = {
 	y: 0,
 	throttle: 0.085
 };
-
+fc.stdout.pipe(process.stdout);
 fc.stdin.write(JSON.stringify(control));

@@ -51,6 +51,6 @@ while 1:
 		control = stdin;
 
 	# Drone instruction
-	# print(control);
+	print(control);
 	setAll(control["throttle"]);
 	time.sleep(0.001);
