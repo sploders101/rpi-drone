@@ -48,6 +48,11 @@ print("Ready.");
 sys.stdout.flush();
 
 while 1:
+    # Handle physical inputs
+	for event in sense.stick.get_events():
+		if event.action == "pressed" and event.direction == "middle":
+			print("Shutdown.");
+			sys.stdout.flush();
 	# Handle incoming messages
 	stdin = readIn();
 	if stdin:
