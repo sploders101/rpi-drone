@@ -14,8 +14,8 @@ import quad_stablizer;
 import sys,select,time,json;
 
 # INITIALIZATION
-drone = Adafruit_PCA9685.PCA9685();
-sense = SenseHat();
+# drone = Adafruit_PCA9685.PCA9685();
+# sense = SenseHat();
 
 # DRONE FUNCTIONS
 # def setSpeedPercentage(channel, speed): # channel (0..4), speed (0..1)
