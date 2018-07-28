@@ -41,4 +41,4 @@ sc.lpad.on("untouch",() => {
 	control.throttle = 0;
 	sendControl();
 });
-controller.connect();
+sc.connect();
