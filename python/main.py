@@ -64,6 +64,7 @@ while 1:
 			control = stdin;
 
 	# Instruct drone limbs
-	setOutput(stablizer(getSensors(sense),control));
-	# setAll(control["throttle"]);
+	# setOutput(stablizer(getSensors(sense),control));
+	getSensors(sense);
+	setAll(control["throttle"]);
 	time.sleep(0.001);
