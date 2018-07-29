@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sploders101/rpi-drone/issues"
   },
-  "homepage": "https://github.com/sploders101/rpi-drone#readme"
+  "homepage": "https://github.com/sploders101/rpi-drone#readme",
+  "dependencies": {
+    "node-steam-controller": "^0.1.2"
+  }
 }
