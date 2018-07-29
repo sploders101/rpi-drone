@@ -18,6 +18,7 @@ let control = {
 
 // SPAWN PYTHON SUBSYSTEM ON CORE 3
 let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
+fc.stderr.pipe(process.stderr);
 console.log("Spawned subsystem");
 // SETUP PYTHON IPC
 fc.stdout.setEncoding("ascii");
