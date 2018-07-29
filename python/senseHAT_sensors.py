@@ -1,2 +1,6 @@
 def getSensors(sense):
-	return sense.get_orientation();
+	orientation = {};
+	sensors = sense.get_orientation();
+	orientation["x"] = sensors["roll"];
+	orientation["y"] = sensors["pitch"];
+	return orientation;
