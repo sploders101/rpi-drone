@@ -12,7 +12,7 @@ let control = {
 	_type: "control",
 	x: 0,
 	y: 0,
-	r: 0,
+	rotate: 0,
 	throttle: 0
 };
 
