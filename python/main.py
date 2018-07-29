@@ -53,9 +53,9 @@ send("Ready.");
 
 while 1:
     # Handle physical inputs
-	for event in sense.stick.get_events():
-		if event.action == "pressed" and event.direction == "middle":
-			send("Shutdown.");
+	# for event in sense.stick.get_events():
+	# 	if event.action == "pressed" and event.direction == "middle":
+	# 		send("Shutdown.");
 
 	# Handle incoming messages
 	stdin = readIn();
