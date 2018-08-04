@@ -27,6 +27,7 @@ def setSpeedPercentage(channel, speed): # channel (0..4), speed (0..1)
 def setOutput(speeds):
 	motor = 0;
 	for speed in speeds:
+		send(speed);
 		drone.set_pwm(motor, 0, int( speed*sMultiplier + smin ) );
 		motor += 1;
 def setAll(throttle):
@@ -59,7 +60,6 @@ while 1:
 
 	# Handle incoming messages
 	readIn();
-	send("Finished readIn");
 	# Instruct drone limbs
 	setOutput(stablizer(getSensors(sense),control));
 	# getSensors(sense);
