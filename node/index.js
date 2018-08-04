@@ -20,14 +20,16 @@ let control = {
 };
 
 // SPAWN PYTHON SUBSYSTEM ON CORE 3
-let fc = pytalk.worker(`${projectDir}/python/main.py`);
+let fc = pytalk.worker(`${projectDir}/python/main.py`,{
+	async: true
+});
 let fcControl = fc.method("sendControl");
 notify.ready();
 notify.startWatchdogMode(500);
 console.log("Spawned subsystem");
 
 function sendControl() {
-	// console.log(control);
+	console.log(control);
 	fcControl(JSON.stringify(control));
 }
 
