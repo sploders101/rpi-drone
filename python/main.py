@@ -42,7 +42,7 @@ def readIn():
 				line = json.loads(sline);
 				send(line["throttle"]);
 				if line["_type"] == "control":
-					control = stdin;
+					control = line;
 def send(str1):
 	print(str1);
 	sys.stdout.flush();
