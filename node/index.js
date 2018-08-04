@@ -36,7 +36,10 @@ fc.stdout.on("data",(data) => { //Input from python script
 });
 function sendControl() {
 	// console.log(control);
-	fc.stdin.write(JSON.stringify(control)+"\n");
+	fc.stdin.write(JSON.stringify(control));
+	fc.stdin.uncork();
+	fc.stdin.write("\n");
+	fc.stdin.uncork();
 }
 
 // SETUP STEAM CONTROLLER INPUT
