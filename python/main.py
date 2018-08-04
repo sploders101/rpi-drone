@@ -35,14 +35,14 @@ def setAll(throttle):
 
 # STANDARD FUNCTIONS
 def readIn():
-	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-		for sline in sys.stdin:
-			send(sline);
-			if sline.find("{")>=0:
-				line = json.loads(sline);
-				send(line["throttle"]);
-				if line["_type"] == "control":
-					control = line;
+	if select.select([sys.stdin], [], [], 0)[0]:
+		sline = sys.stdin.readline();
+		send(sline);
+		if sline.find("{")>=0:
+			line = json.loads(sline);
+			send(line["throttle"]);
+			if line["_type"] == "control":
+				control = line;
 def send(str1):
 	print(str1);
 	sys.stdout.flush();
