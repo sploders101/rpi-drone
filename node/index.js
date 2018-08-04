@@ -1,9 +1,11 @@
+#!/bin/node
 //NOTE: Higher-level computing for drone control
 
 // IMPORTS
 let {spawn} = require("child_process");
 let path = require("path");
 let SteamController = require("node-steam-controller");
+let notify = require("sd-notify");
 
 // INITIALIZE VARS
 let projectDir = path.join(__dirname,"..");
@@ -26,6 +28,8 @@ fc.stdout.on("data",(data) => { //Input from python script
 	console.log(data);
 	if(data == "Ready.\n") { //When python reports it is ready...
 		sendControl(); //Send the current state of control
+		notify.ready();
+		notify.startWatchdogMode(500);
 	} else if(data == "Shutdown.\n") { //When python says it's time to shutdown...
 		spawn("shutdown",["-h","now"]);
 	}
