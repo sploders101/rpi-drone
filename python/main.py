@@ -11,13 +11,10 @@ sMultiplier = smax-smin;
 from quad_stablizer import stablizer;
 from senseHAT_sensors import getSensors;
 import Adafruit_PCA9685;
-from sense_hat import SenseHat;
 import sys,select,time,json;
 
 # INITIALIZATION
 drone = Adafruit_PCA9685.PCA9685();
-sense = SenseHat();
-sense.set_imu_config(True, True, False);
 control = {};
 control["throttle"] = 0.0;
 control["x"] = 0.0;
@@ -51,6 +48,8 @@ def send(str1):
 
 send("Ready.");
 
+sense = {}
+
 while 1:
     # Handle physical inputs
 	# for event in sense.stick.get_events():
@@ -64,7 +63,7 @@ while 1:
 			control = stdin;
 
 	# Instruct drone limbs
-	# setOutput(stablizer(getSensors(sense),control));
-	getSensors(sense);
-	setAll(control["throttle"]);
+	setOutput(stablizer(getSensors(sense),control));
+	# getSensors(sense);
+	# setAll(control["throttle"]);
 	time.sleep(0.001);
