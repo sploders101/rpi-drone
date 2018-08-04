@@ -48,7 +48,7 @@ def send(str1):
 	print(str1);
 	sys.stdout.flush();
 # MAIN
-
+readIn();
 send("Ready.");
 
 sense = {}
