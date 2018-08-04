@@ -35,18 +35,9 @@ def setAll(throttle):
 	drone.set_all_pwm(0,int( throttle*sMultiplier + smin ));
 
 # STANDARD FUNCTIONS
-def readIn():
-	if select.select([sys.stdin], [], [], 0)[0]:
-		sline = sys.stdin.readline();
-		send(sline);
-		if sline.find("{")>=0:
-			line = json.loads(sline);
-			send(line["throttle"]);
-			if line["_type"] == "control":
-				control = line;
-def send(str1):
-	print(str1);
-	sys.stdout.flush();
+@pytalk_method('sendControl');
+def readIn(con):
+	control = con;
 # MAIN
 send("Ready.");
 
@@ -58,8 +49,6 @@ while 1:
 	# 	if event.action == "pressed" and event.direction == "middle":
 	# 		send("Shutdown.");
 
-	# Handle incoming messages
-	readIn();
 	# Instruct drone limbs
 	setOutput(stablizer(getSensors(sense),control));
 	# getSensors(sense);
