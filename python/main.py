@@ -36,7 +36,7 @@ def setAll(throttle):
 # STANDARD FUNCTIONS
 @pytalk_method('sendControl')
 def readIn(con):
-	control = con;
+	control = json.loads(con);
 # MAIN
 
 sense = {}
