@@ -36,19 +36,19 @@ def setAll(throttle):
 # STANDARD FUNCTIONS
 def readIn():
 	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-		sline = sys.stdin.readline();
-		send(sline);
-		line = json.loads(sline);
-		send(line["throttle"]);
-		if line:
-			return line;
-		else:
-			return false;
+		for sline in sys.stdin
+			send(sline);
+			line = json.loads(sline);
+			send(line["throttle"]);
+			if line:
+				if line["_type"] == "control":
+					control = stdin;
+			else:
+				return false;
 def send(str1):
 	print(str1);
 	sys.stdout.flush();
 # MAIN
-sys.stdin.readline()
 send("Ready.");
 
 sense = {}
@@ -60,10 +60,7 @@ while 1:
 	# 		send("Shutdown.");
 
 	# Handle incoming messages
-	stdin = readIn();
-	if stdin:
-		if stdin["_type"] == "control":
-			control = stdin;
+	readIn();
 
 	# Instruct drone limbs
 	setOutput(stablizer(getSensors(sense),control));
