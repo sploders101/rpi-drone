@@ -36,7 +36,7 @@ def setAll(throttle):
 # STANDARD FUNCTIONS
 def readIn():
 	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-		for sline in sys.stdin
+		for sline in sys.stdin:
 			send(sline);
 			if sLine != "":
 				line = json.loads(sline);
