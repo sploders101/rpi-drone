@@ -38,6 +38,7 @@ def readIn():
 	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
 		send(sys.stdin.readline());
 		line = json.loads(sys.stdin.readline());
+		send(line["throttle"]);
 		if line:
 			return line;
 		else:
