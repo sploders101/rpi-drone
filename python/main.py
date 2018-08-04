@@ -59,7 +59,7 @@ while 1:
 
 	# Handle incoming messages
 	readIn();
-
+	send("Finished readIn");
 	# Instruct drone limbs
 	setOutput(stablizer(getSensors(sense),control));
 	# getSensors(sense);
