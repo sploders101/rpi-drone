@@ -28,7 +28,7 @@ console.log("Spawned subsystem");
 
 function sendControl() {
 	// console.log(control);
-	fcControl(control);
+	fcControl(JSON.stringify(control));
 }
 
 // SETUP STEAM CONTROLLER INPUT
