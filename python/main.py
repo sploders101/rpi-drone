@@ -38,13 +38,11 @@ def readIn():
 	if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
 		for sline in sys.stdin
 			send(sline);
-			line = json.loads(sline);
-			send(line["throttle"]);
-			if line:
+			if sLine != "":
+				line = json.loads(sline);
+				send(line["throttle"]);
 				if line["_type"] == "control":
 					control = stdin;
-			else:
-				return false;
 def send(str1):
 	print(str1);
 	sys.stdout.flush();

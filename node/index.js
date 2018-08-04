@@ -38,7 +38,7 @@ function sendControl() {
 	// console.log(control);
 	fc.stdin.cork();
 	fc.stdin.write(JSON.stringify(control));
-	fc.stdin.write(Buffer.from([0x0D,0x0A]));
+	fc.stdin.write(Buffer.from([0x0D,0x0A,0x0D,0x0A]));
 	fc.stdin.uncork();
 }
 
