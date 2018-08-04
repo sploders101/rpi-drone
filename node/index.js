@@ -36,7 +36,9 @@ fc.stdout.on("data",(data) => { //Input from python script
 });
 function sendControl() {
 	// console.log(control);
-	fc.stdin.write(JSON.stringify(control));
+	fc.stdin.write(JSON.stringify(control)+"\n");
+	fc.stdin.uncork();
+	fc.stdin.write();
 	fc.stdin.uncork();
 }
 
