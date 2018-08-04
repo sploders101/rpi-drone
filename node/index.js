@@ -19,27 +19,15 @@ let control = {
 };
 
 // SPAWN PYTHON SUBSYSTEM ON CORE 3
-let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
-fc.stderr.pipe(process.stderr);
+let fc = pytalk.worker(`${projectDir}/python/main.py`);
+let fcControl = fc.method("sendControl");
+notify.ready();
+notify.startWatchdogMode(500);
 console.log("Spawned subsystem");
-// SETUP PYTHON IPC
-fc.stdout.setEncoding("ascii");
-fc.stdout.on("data",(data) => { //Input from python script
-	console.log(data);
-	if(data == "Ready.\n") { //When python reports it is ready...
-		sendControl(); //Send the current state of control
-		notify.ready();
-		notify.startWatchdogMode(500);
-	} else if(data == "Shutdown.\n") { //When python says it's time to shutdown...
-		spawn("shutdown",["-h","now"]);
-	}
-});
+
 function sendControl() {
 	// console.log(control);
-	fc.stdin.cork();
-	fc.stdin.write(JSON.stringify(control));
-	fc.stdin.write(Buffer.from([0x0D,0x0A,0x0D,0x0A]));
-	fc.stdin.uncork();
+	fcControl(control);
 }
 
 // SETUP STEAM CONTROLLER INPUT

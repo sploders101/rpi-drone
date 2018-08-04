@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sploders101/rpi-drone#readme",
   "dependencies": {
     "node-steam-controller": "^0.1.2",
-    "sd-notify": "^2.3.0"
+    "sd-notify": "^2.3.0",
+	"pytalk": "^1.0.5"
   }
 }
