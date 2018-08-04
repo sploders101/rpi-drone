@@ -38,6 +38,7 @@ function sendControl() {
 	console.log(control);
 	fc.stdin.write(JSON.stringify(control)+"\n");
 	fc.stdin.uncork();
+	fc.stdin.uncork();
 }
 
 // SETUP STEAM CONTROLLER INPUT
