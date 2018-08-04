@@ -35,7 +35,7 @@ def setAll(throttle):
 	drone.set_all_pwm(0,int( throttle*sMultiplier + smin ));
 
 # STANDARD FUNCTIONS
-@pytalk_method('sendControl');
+@pytalk_method('sendControl')
 def readIn(con):
 	control = con;
 # MAIN
