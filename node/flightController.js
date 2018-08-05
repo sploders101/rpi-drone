@@ -1,9 +1,9 @@
 // Libraries and hardware constants
 const i2c = require("i2c-bus");
 const {Pca9685Driver} = require("pca9685");
-const i2cBus = {device: "/dev/i2c-1"};
+const i2cBus = i2c.openSync(1);
 const pcaOptions = {
-	i2c: i2c.openSync(1),
+	i2c: i2cBus,
 	address: 0x40,
 	frequency: 50,
 	debug: false
@@ -19,7 +19,7 @@ let pwm = new Pca9685Driver(pcaOptions, function(err) {
 const pwmMin = 800.0;
 const pwmMax = 1900.0;
 const pwmRange = pwmMax - pwmMin;
-const gyro = new i2c(0x1c,i2cBus);
+const gyro = 0x1c;
 const register = 0x28;// Read 4 bytes for [x,y]
 // const x = 0x2a;
 const xMultiplier = 0.000030519;
@@ -48,7 +48,7 @@ process.send({"_type": "state","value": "Ready."});
 
 function driveLoop() {
 	let sensorData = Buffer.allocUnsafe(4);
-	i2c.i2cRead(register,4,sensorData,(err) => {
+	i2c.readi2cBlock(gyro,register,4,sensorData,(err) => {
 		if(err) {
 			console.error(err);
 			return;
