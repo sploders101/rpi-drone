@@ -75,6 +75,8 @@ function driveLoop() {
 			}
 		}
 
+		console.log(motors);
+
 		let pwmSetters = new Array(4);
 		for (var i = 0; i < motors.length; i++) {
 			pwmSetters[i] = new Promise((resolve,reject) => {
