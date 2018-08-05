@@ -16,8 +16,8 @@ let pwm = new Pca9685Driver(pcaOptions, function(err) {
 });
 
 // User-configurable constants
-const pwmMin = 800.0;
-const pwmMax = 1900.0;
+const pwmMin = 200.0;
+const pwmMax = 500.0;
 const pwmRange = pwmMax - pwmMin;
 const gyro = 0x1c;
 const register = 0x28;// Read 4 bytes for [x,y]
