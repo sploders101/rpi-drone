@@ -119,6 +119,8 @@ function driveLoop() {
 	motorData.writeUInt16LE(motors[2] * pwmRange + pwmMin,10);
 	motorData.writeUInt16LE(motors[3] * pwmRange + pwmMin,14);
 
+	console.log(motorData);
+
 	i2cBus.writeI2cBlockSync(pcaOptions.address,motorRegister,16,motorData);
 
 	process.nextTick(driveLoop);
