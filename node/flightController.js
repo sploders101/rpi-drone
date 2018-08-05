@@ -73,7 +73,7 @@ function driveLoop() {
 					}
 				}
 			} else if(motors[i] < 0) {
-				motors[i] = pwmMin;
+				motors[i] = 0.085;
 			}
 		}
 
