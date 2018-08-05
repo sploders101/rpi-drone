@@ -61,6 +61,8 @@ function driveLoop() {
 		motors[2] = ( y/2) + (-x/2) + ( control.x/2) + ( control.y/2) + ( control.rotate/2) + (control.throttle);
 		motors[3] = (-y/2) + (-x/2) + (-control.x/2) + ( control.y/2) + (-control.rotate/2) + (control.throttle);
 
+		console.log(motors);
+
 		for (var i = 0; i < 4; i++) {
 			if(motors[i] > 1) {
 				let offset = motors[i] - 1;
