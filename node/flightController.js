@@ -66,8 +66,8 @@ function driveLoop() {
 			console.error(err);
 			return;
 		}
-		let x = (sensorData.readInt16LE(0) - calibration.x) * calibration.sensors * xMultiplier;
-		let y = (sensorData.readInt16LE(2) - calibration.y) * calibration.sensors * yMultiplier;
+		let x = (sensorData.readInt16LE(0) - calibration.x) * xMultiplier * calibration.sensors;
+		let y = (sensorData.readInt16LE(2) - calibration.y) * yMultiplier * calibration.sensors;
 
 		motors[0] = ( y/2) + ( x/2) + ( control.x/2) + (-control.y/2) + (-control.rotate/2) + (control.throttle);
 		motors[1] = (-y/2) + ( x/2) + (-control.x/2) + (-control.y/2) + ( control.rotate/2) + (control.throttle);
