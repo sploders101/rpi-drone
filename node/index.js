@@ -50,4 +50,9 @@ sc.lpad.on("untouch",() => {
 	control.throttle = 0;
 	sendControl();
 });
+sc.x.on('press',() => {
+	fc.send({
+		_type: "calibrate"
+	});
+});
 sc.connect();

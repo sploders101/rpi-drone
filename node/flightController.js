@@ -1,4 +1,5 @@
 // Libraries and hardware constants
+const fs = require("fs");
 const i2c = require("i2c-bus");
 const {Pca9685Driver} = require("pca9685");
 const i2cBus = i2c.openSync(1);
@@ -20,6 +21,7 @@ const pwmMin = 200.0;
 const pwmMax = 500.0;
 const pwmRange = pwmMax - pwmMin;
 const gyro = 0x1c;
+let calibration = JSON.parse(fs.readFileSync("/home/pi/rpi-drone/calibration.json"));
 const register = 0x28;// Read 4 bytes for [x,y]
 // const x = 0x2a;
 const xMultiplier = 0.000030519;
@@ -39,22 +41,33 @@ process.on("message",(msg) => {
 	switch(msg._type) {
 		case "control":
 			control = msg;
+			break;
+		case "calibrate":
+			calibrate();
+			break;
 	}
 });
+
+let sensorData = Buffer.allocUnsafe(4);
 
 driveLoop();
 
 process.send({"_type": "state","value": "Ready."});
 
+function calibrate() {
+	calibration.x = sensorData.readInt16LE(0);
+	calibration.y = sensorData.readInt16LE(2);
+	fs.writeFile("/home/pi/rpi-drone/calibration.json",JSON.stringify(calibration));
+}
+
 function driveLoop() {
-	let sensorData = Buffer.allocUnsafe(4);
 	i2cBus.readI2cBlock(gyro,register,4,sensorData,(err) => {
 		if(err) {
 			console.error(err);
 			return;
 		}
-		let x = sensorData.readInt16LE(0) * xMultiplier;
-		let y = sensorData.readInt16LE(2) * yMultiplier;
+		let x = (sensorData.readInt16LE(0) - calibration.x) * xMultiplier;
+		let y = (sensorData.readInt16LE(2) - calibration.y) * yMultiplier;
 
 		console.log(x,y,"-----------------");
 
