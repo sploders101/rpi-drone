@@ -64,10 +64,10 @@ function driveLoop() {
 		for (var i = 0; i < 4; i++) {
 			if(motors[i] > 1) {
 				let offset = motors[i] - 1;
-				for (var i = 0; i < 4; i++) {
-					motors[i] -= offset;
-					if(motors[i] < 0) {
-						motors[i] = pwmMin;
+				for (var j = 0; j < 4; j++) {
+					motors[j] -= offset;
+					if(motors[j] < 0) {
+						motors[j] = pwmMin;
 					}
 				}
 			} else if(motors[i] < 0) {
