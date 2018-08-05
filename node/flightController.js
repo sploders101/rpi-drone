@@ -103,7 +103,7 @@ function driveLoop() {
 		}
 		// console.log("-------------------");
 		Promise.all(pwmSetters).then(() => {
-			process.nextTick(driveLoop);
+			driveLoop();
 		});
 
 	});
