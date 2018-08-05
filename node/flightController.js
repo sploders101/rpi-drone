@@ -46,6 +46,9 @@ process.on("message",(msg) => {
 		case "calibrate":
 			calibrate();
 			break;
+		case "trim":
+			trim(msg);
+			break;
 	}
 });
 
@@ -76,7 +79,12 @@ process.send({"_type": "state","value": "Ready."});
 function calibrate() {
 	calibration.x = sensorData.readInt16LE(0);
 	calibration.y = sensorData.readInt16LE(2);
-	fs.writeFile("/home/pi/rpi-drone/calibration.json",JSON.stringify(calibration));
+	fs.writeFile("/home/pi/rpi-drone/calibration.json",JSON.stringify(calibration),() => {});
+}
+function trim(msg) {
+	calibration.x += msg.x;
+	calibration.y += msg.y;
+	fs.writeFile("/home/pi/rpi-drone/calibration.json",JSON.stringify(calibration),() => {});
 }
 
 function driveLoop() {

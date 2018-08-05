@@ -55,4 +55,32 @@ sc.x.on('press',() => {
 		_type: "calibrate"
 	});
 });
+sc.back.on('press',() => {
+	fc.send({
+		_type: "trim",
+		x: -1,
+		y: 0
+	});
+});
+sc.forward.on('press',() => {
+	fc.send({
+		_type: "trim",
+		x: 1,
+		y: 0
+	});
+});
+sc.y.on('press',() => {
+	fc.send({
+		_type: "trim",
+		x: 0,
+		y: 1
+	});
+});
+sc.a.on('press',() => {
+	fc.send({
+		_type: "trim",
+		x: 0,
+		y: -1
+	});
+});
 sc.connect();
