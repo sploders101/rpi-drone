@@ -48,7 +48,7 @@ process.send({"_type": "state","value": "Ready."});
 
 function driveLoop() {
 	let sensorData = Buffer.allocUnsafe(4);
-	i2c.readi2cBlock(gyro,register,4,sensorData,(err) => {
+	i2c.readI2cBlock(gyro,register,4,sensorData,(err) => {
 		if(err) {
 			console.error(err);
 			return;
