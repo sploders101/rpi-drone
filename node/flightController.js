@@ -56,6 +56,8 @@ function driveLoop() {
 		let x = sensorData.readInt16LE(0) * xMultiplier;
 		let y = sensorData.readInt16LE(2) * yMultiplier;
 
+		console.log(x,y,"-----------------");
+
 		motors[0] = ( y/2) + ( x/2) + ( control.x/2) + (-control.y/2) + (-control.rotate/2) + (control.throttle);
 		motors[1] = (-y/2) + ( x/2) + (-control.x/2) + (-control.y/2) + ( control.rotate/2) + (control.throttle);
 		motors[2] = ( y/2) + (-x/2) + ( control.x/2) + ( control.y/2) + ( control.rotate/2) + (control.throttle);
@@ -77,7 +79,7 @@ function driveLoop() {
 
 		let pwmSetters = new Array(4);
 		for (var i = 0; i < motors.length; i++) {
-			console.log(motors[i] * pwmRange + pwmMin);
+			// console.log(motors[i] * pwmRange + pwmMin);
 			pwmSetters[i] = new Promise((resolve,reject) => {
 				pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
 					if(err) {
@@ -88,7 +90,7 @@ function driveLoop() {
 				});
 			});
 		}
-		console.log("-------------------");
+		// console.log("-------------------");
 		Promise.all(pwmSetters).then(() => {
 			process.nextTick(driveLoop);
 		});
