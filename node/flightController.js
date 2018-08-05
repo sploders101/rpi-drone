@@ -75,10 +75,9 @@ function driveLoop() {
 			}
 		}
 
-		console.log(motors);
-
 		let pwmSetters = new Array(4);
 		for (var i = 0; i < motors.length; i++) {
+			console.log(motors[i] * pwmRange + pwmMin);
 			pwmSetters[i] = new Promise((resolve,reject) => {
 				pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
 					if(err) {
