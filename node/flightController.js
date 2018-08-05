@@ -53,7 +53,7 @@ let sensorData = Buffer.allocUnsafe(4);
 let initSetters = new Array(4);
 for (var i = 0; i < motors.length; i++) {
 	// console.log(motors[i] * pwmRange + pwmMin);
-	pwmSetters[i] = new Promise((resolve,reject) => {
+	initSetters[i] = new Promise((resolve,reject) => {
 		pwm.setPulseRange(i,0,pwmMin,(err) => {
 			if(err) {
 				reject("Error setting range");
@@ -64,7 +64,7 @@ for (var i = 0; i < motors.length; i++) {
 	});
 }
 // console.log("-------------------");
-Promise.all(pwmSetters).then(() => {
+Promise.all(initSetters).then(() => {
 	setTimeout(driveLoop,5000);
 });
 
