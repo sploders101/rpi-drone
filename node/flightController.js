@@ -23,7 +23,8 @@ const pwmMax = 500.0;
 const pwmRange = pwmMax - pwmMin;
 const gyro = 0x1c;
 let calibration = JSON.parse(fs.readFileSync("/home/pi/rpi-drone/calibration.json"));
-const register = 0x28;// Read 4 bytes for [x,y]
+const register = 0x28;// Read 4 bytes for [x,y] sensors
+const motorRegister = 0x06;
 // const x = 0x2a;
 const xMultiplier = 0.000030519;
 // const y = 0x28;
@@ -53,6 +54,7 @@ process.on("message",(msg) => {
 });
 
 let sensorData = Buffer.allocUnsafe(4);
+let motorData = Buffer.alloc(16);
 
 let initSetters = new Array(4);
 for (var i = 0; i < motors.length; i++) {
@@ -111,21 +113,11 @@ function driveLoop() {
 		}
 	}
 
-	let pwmSetters = new Array(4);
-	for (var i = 0; i < motors.length; i++) {
-		// console.log(motors[i] * pwmRange + pwmMin);
-		pwmSetters[i] = new Promise((resolve,reject) => {
-			pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
-				if(err) {
-					reject("Error setting range");
-				} else {
-					resolve();
-				}
-			});
-		});
-	}
-	// console.log("-------------------");
-	Promise.all(pwmSetters).then(() => {
-		driveLoop();
-	});
+	// write motors
+	motorData.writeUInt16LE(motors[0],2);
+	motorData.writeUInt16LE(motors[1],6);
+	motorData.writeUInt16LE(motors[2],10);
+	motorData.writeUInt16LE(motors[3],14);
+
+	i2cBus.writeI2cBlockSync(pcaOptions.address,motorRegister,16,motorData);
 }
