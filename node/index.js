@@ -2,7 +2,7 @@
 //NOTE: Higher-level computing for drone control
 
 // IMPORTS
-let {spawn} = require("child_process");
+let {fork} = require("child_process");
 let path = require("path");
 let SteamController = require("node-steam-controller");
 let notify = require("sd-notify");
@@ -18,28 +18,19 @@ let control = {
 	throttle: 0
 };
 
-// SPAWN PYTHON SUBSYSTEM ON CORE 3
-let fc = spawn("taskset",["-c","3","python3","python/main.py"],{cwd: projectDir});
-fc.stderr.pipe(process.stderr);
-console.log("Spawned subsystem");
-// SETUP PYTHON IPC
-fc.stdout.setEncoding("ascii");
-fc.stdout.on("data",(data) => { //Input from python script
-	console.log(data);
-	if(data == "Ready.\n") { //When python reports it is ready...
-		sendControl(); //Send the current state of control
-		notify.ready();
-		notify.startWatchdogMode(500);
-	} else if(data == "Shutdown.\n") { //When python says it's time to shutdown...
-		spawn("shutdown",["-h","now"]);
+let fc = fork(`${__dirname}/flightController.js`);
+fc.on("message", (msg) => {
+	switch(msg._type) {
+		case "status":
+			if(msg.value=="Ready.") {
+				notify.ready();
+				notify.startWatchdogMode(500);
+			}
+			break;
 	}
 });
 function sendControl() {
-	// console.log(control);
-	fc.stdin.cork();
-	fc.stdin.write(JSON.stringify(control));
-	fc.stdin.write(Buffer.from([0x0D,0x0A,0x0D,0x0A]));
-	fc.stdin.uncork();
+	fc.send(control);
 }
 
 // SETUP STEAM CONTROLLER INPUT
@@ -58,5 +49,10 @@ sc.lpad.on("move",(e) => {
 sc.lpad.on("untouch",() => {
 	control.throttle = 0;
 	sendControl();
+});
+sc.x.on('press',() => {
+	fc.send({
+		_type: "calibrate"
+	});
 });
 sc.connect();
