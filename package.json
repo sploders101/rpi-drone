@@ -18,6 +18,8 @@
   "homepage": "https://github.com/sploders101/rpi-drone#readme",
   "dependencies": {
     "node-steam-controller": "^0.1.2",
-    "sd-notify": "^2.3.0"
+    "sd-notify": "^2.3.0",
+	"i2c-bus": "^4.0.1",
+	"pca9685": "^4.0.3"
   }
 }
