@@ -88,50 +88,44 @@ function trim(msg) {
 }
 
 function driveLoop() {
-	i2cBus.readI2cBlock(gyro,register,4,sensorData,(err) => {
-		if(err) {
-			console.error(err);
-			return;
-		}
-		let x = (sensorData.readInt16LE(0) - calibration.x) * xMultiplier * calibration.sensors;
-		let y = (sensorData.readInt16LE(2) - calibration.y) * yMultiplier * calibration.sensors;
+	i2cBus.readI2cBlockSync(gyro,register,4,sensorData);
+	let x = (sensorData.readInt16LE(0) - calibration.x) * xMultiplier * calibration.sensors;
+	let y = (sensorData.readInt16LE(2) - calibration.y) * yMultiplier * calibration.sensors;
 
-		motors[0] = ( y/2) + ( x/2) + ( control.x/2) + (-control.y/2) + (-control.rotate/2) + (control.throttle);
-		motors[1] = (-y/2) + ( x/2) + (-control.x/2) + (-control.y/2) + ( control.rotate/2) + (control.throttle);
-		motors[2] = ( y/2) + (-x/2) + ( control.x/2) + ( control.y/2) + ( control.rotate/2) + (control.throttle);
-		motors[3] = (-y/2) + (-x/2) + (-control.x/2) + ( control.y/2) + (-control.rotate/2) + (control.throttle);
+	motors[0] = ( y/2) + ( x/2) + ( control.x/2) + (-control.y/2) + (-control.rotate/2) + (control.throttle);
+	motors[1] = (-y/2) + ( x/2) + (-control.x/2) + (-control.y/2) + ( control.rotate/2) + (control.throttle);
+	motors[2] = ( y/2) + (-x/2) + ( control.x/2) + ( control.y/2) + ( control.rotate/2) + (control.throttle);
+	motors[3] = (-y/2) + (-x/2) + (-control.x/2) + ( control.y/2) + (-control.rotate/2) + (control.throttle);
 
-		for (var i = 0; i < 4; i++) {
-			if(motors[i] > 1) {
-				let offset = motors[i] - 1;
-				for (var j = 0; j < 4; j++) {
-					motors[j] -= offset;
-					if(motors[j] < 0) {
-						motors[j] = pwmMin;
-					}
+	for (var i = 0; i < 4; i++) {
+		if(motors[i] > 1) {
+			let offset = motors[i] - 1;
+			for (var j = 0; j < 4; j++) {
+				motors[j] -= offset;
+				if(motors[j] < 0) {
+					motors[j] = pwmMin;
 				}
-			} else if(motors[i] < 0) {
-				motors[i] = 0.085;
 			}
+		} else if(motors[i] < 0) {
+			motors[i] = 0.085;
 		}
+	}
 
-		let pwmSetters = new Array(4);
-		for (var i = 0; i < motors.length; i++) {
-			// console.log(motors[i] * pwmRange + pwmMin);
-			pwmSetters[i] = new Promise((resolve,reject) => {
-				pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
-					if(err) {
-						reject("Error setting range");
-					} else {
-						resolve();
-					}
-				});
+	let pwmSetters = new Array(4);
+	for (var i = 0; i < motors.length; i++) {
+		// console.log(motors[i] * pwmRange + pwmMin);
+		pwmSetters[i] = new Promise((resolve,reject) => {
+			pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
+				if(err) {
+					reject("Error setting range");
+				} else {
+					resolve();
+				}
 			});
-		}
-		// console.log("-------------------");
-		Promise.all(pwmSetters).then(() => {
-			driveLoop();
 		});
-
+	}
+	// console.log("-------------------");
+	Promise.all(pwmSetters).then(() => {
+		driveLoop();
 	});
 }
