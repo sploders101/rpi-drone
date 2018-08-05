@@ -6,7 +6,7 @@ const pcaOptions = {
 	i2c: i2c.openSync(1),
 	address: 0x40,
 	frequency: 50,
-	debug: false;
+	debug: false
 };
 let pwm = new Pca9685Driver(pcaOptions, function(err) {
 	if(err) {
