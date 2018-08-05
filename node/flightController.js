@@ -114,10 +114,12 @@ function driveLoop() {
 	}
 
 	// write motors
-	motorData.writeUInt16LE(motors[0],2);
-	motorData.writeUInt16LE(motors[1],6);
-	motorData.writeUInt16LE(motors[2],10);
-	motorData.writeUInt16LE(motors[3],14);
+	motorData.writeUInt16LE(motors[0] * pwmRange + pwmMin,2);
+	motorData.writeUInt16LE(motors[1] * pwmRange + pwmMin,6);
+	motorData.writeUInt16LE(motors[2] * pwmRange + pwmMin,10);
+	motorData.writeUInt16LE(motors[3] * pwmRange + pwmMin,14);
 
 	i2cBus.writeI2cBlockSync(pcaOptions.address,motorRegister,16,motorData);
+
+	process.nextTick(driveLoop);
 }
