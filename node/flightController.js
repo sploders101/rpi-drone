@@ -16,12 +16,15 @@ let pwm = new Pca9685Driver(pcaOptions, function(err) {
 });
 
 // User-configurable constants
+const pwmMin = 800.0;
+const pwmMax = 1900.0;
+const pwmRange = pwmMax - pwmMin;
 const gyro = new i2c(0x1c,i2cBus);
 const register = 0x28;// Read 4 bytes for [x,y]
 // const x = 0x2a;
-const xMultiplier = 1;
+const xMultiplier = 0.000030519;
 // const y = 0x28;
-const yMultiplier = -1;
+const yMultiplier = -0.000030519;
 
 let control = {
 	_type: "control",
@@ -30,6 +33,7 @@ let control = {
 	rotate: 0,
 	throttle: 0
 };
+let motors = new Array(4);
 
 process.on("message",(msg) => {
 	switch(msg._type) {
@@ -43,5 +47,49 @@ driveLoop();
 process.send({"_type": "state","value": "Ready."});
 
 function driveLoop() {
+	let sensorData = Buffer.allocUnsafe(4);
+	i2c.i2cRead(register,4,sensorData,(err) => {
+		if(err) {
+			console.error(err);
+			return;
+		}
+		let x = sensorData.readInt16LE(0) * xMultiplier;
+		let y = sensorData.readInt16LE(2) * yMultiplier;
 
+		motors[0] = ( y/2) + ( x/2) + ( control.x/2) + (-control.y/2) + (-control.rotate/2) + (control.throttle);
+		motors[1] = (-y/2) + ( x/2) + (-control.x/2) + (-control.y/2) + ( control.rotate/2) + (control.throttle);
+		motors[2] = ( y/2) + (-x/2) + ( control.x/2) + ( control.y/2) + ( control.rotate/2) + (control.throttle);
+		motors[3] = (-y/2) + (-x/2) + (-control.x/2) + ( control.y/2) + (-control.rotate/2) + (control.throttle);
+
+		for (var i = 0; i < 4; i++) {
+			if(motors[i] > 1) {
+				let offset = motors[i] - 1;
+				for (var i = 0; i < 4; i++) {
+					motors[i] -= offset;
+					if(motors[i] < 0) {
+						motors[i] = pwmMin;
+					}
+				}
+			} else if(motors[i] < 0) {
+				motors[i] = pwmMin;
+			}
+		}
+
+		let pwmSetters = new Array(4);
+		for (var i = 0; i < motors.length; i++) {
+			pwmSetters[i] = new Promise((resolve,reject) => {
+				pwm.setPulseRange(i,0,motors[i] * pwmRange + pwmMin,(err) => {
+					if(err) {
+						reject("Error setting range");
+					} else {
+						resolve();
+					}
+				});
+			});
+		}
+		Promise.all(pwmSetters).then(() => {
+			process.nextTick(driveLoop);
+		});
+
+	});
 }
