@@ -15,6 +15,7 @@ let pwm = new Pca9685Driver(pcaOptions, function(err) {
 		process.exit(-1);
 	}
 });
+require("nodeaffinity").setAffinity(15);
 
 // User-configurable constants
 const pwmMin = 200.0;
