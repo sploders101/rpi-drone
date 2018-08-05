@@ -24,7 +24,7 @@ const register = 0x28;// Read 4 bytes for [x,y]
 // const x = 0x2a;
 const xMultiplier = 0.000030519;
 // const y = 0x28;
-const yMultiplier = -0.000030519;
+const yMultiplier = 0.000030519;
 
 let control = {
 	_type: "control",
