@@ -236,3 +236,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Hidden Files
+.*
