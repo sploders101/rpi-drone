@@ -64,8 +64,11 @@ sc.rpad.on("untouch",() => {
 	sync();
 });
 sc.x.on('press',() => {
+	sync();
 	calibration.x = cRam.readInt16LE(14);
+	console.log(cRam.readInt16LE(14))
 	calibration.y = cRam.readInt16LE(16);
+	console.log(cRam.readInt16LE(16));
 	sync();
 });
 sc.back.on('press',() => {
