@@ -35,6 +35,7 @@ function sendControl() {
 	cRam.writeFloatLE(calibration.x,32);
 	cRam.writeFloatLE(calibration.y,36);
 	cRam.writeFloatLE(calibration.sensors,40);
+	console.log(cRam.readFloatLE(40));
 }
 function syncRam() {
 	mmap.sync(cRam, 0, mmap.PAGE_SIZE, mmap.MS_SYNC);
