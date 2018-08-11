@@ -10,8 +10,10 @@
 #define GYROADDR 0x1c
 #define GYROX 0x28
 #define GYROY 0x2a
-#define MMAPSIZE 50
 #define MMAPLOCATION "/run/user/1000/mmapTest"
+#define MMAPSIZE 44
+#define READSIZE 28
+#define WRITESIZE 16
 #define PWMMIN 200
 #define PWMMAX 500
 
@@ -24,7 +26,7 @@
 
 // Declare memory mapped variables
 int sharedMem;
-void *mappedBuffer;
+char mappedBuffer[MMAPSIZE];
 float *throttle;
 float *moveX;
 float *moveY;
@@ -43,23 +45,20 @@ int main() {
 	lseek(sharedMem,MMAPSIZE-1,SEEK_SET); // Stretch the file
 	write(sharedMem,"",1); // Write empty data to the end
 	sync(); // Sync to fs for node
-	lseek(sharedMem,0,SEEK_SET);
-
-	mappedBuffer = mmap(NULL,MMAPSIZE,PROT_READ | PROT_WRITE, MAP_SHARED,sharedMem,0);
 
 	// Setup memory locations
 	// throttle = (float *) mappedBuffer;
-	throttle = (float *) mappedBuffer;
-	moveX = (float *) mappedBuffer + ( sizeof(float) * 1 );
-	moveY = (float *) mappedBuffer + ( sizeof(float) * 2 );
-	moveRot = (float *) mappedBuffer + ( sizeof(float) * 3);
-	gX = (float *) mappedBuffer + ( sizeof(float) * 4);
-	gY = (float *) mappedBuffer + ( sizeof(float) * 5);
-	gZ = (float *) mappedBuffer + ( sizeof(float) * 6);
-	bar = (float *) mappedBuffer + ( sizeof(float) * 7);
-	cX = (float *) mappedBuffer + ( sizeof(float) * 8);
-	cY = (float *) mappedBuffer + ( sizeof(float) * 9);
-	sensorMult = (float *) mappedBuffer + ( sizeof(float) * 10);
+	throttle = (float *) &mappedBuffer;
+	moveX = (float *) &mappedBuffer + ( sizeof(float) * 1 );
+	moveY = (float *) &mappedBuffer + ( sizeof(float) * 2 );
+	moveRot = (float *) &mappedBuffer + ( sizeof(float) * 3);
+	cX = (float *) &mappedBuffer + ( sizeof(float) * 4);
+	cY = (float *) &mappedBuffer + ( sizeof(float) * 5);
+	sensorMult = (float *) &mappedBuffer + ( sizeof(float) * 6);
+	gX = (float *) &mappedBuffer + ( sizeof(float) * 7);
+	gY = (float *) &mappedBuffer + ( sizeof(float) * 8);
+	gZ = (float *) &mappedBuffer + ( sizeof(float) * 9);
+	bar = (float *) &mappedBuffer + ( sizeof(float) * 10);
 
 	// Setup I2C devices
 	int gyro = wiringPiI2CSetup(GYROADDR);
@@ -74,6 +73,10 @@ int main() {
 	float motors[4];
 
 	while(1) {
+		sync();
+		lseek(sharedMem,0,SEEK_SET); // Go to inputs
+		read(sharedMem, &mappedBuffer, READSIZE); // Read inputs
+
 		*gX = wiringPiI2CReadReg16(gyro,GYROX);
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		// std::cout << *gX << " " << *gY << "\n";
@@ -102,7 +105,8 @@ int main() {
 
 		std::cout << *moveX << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
 
-		msync(mappedBuffer, MMAPSIZE, MS_SYNC | MS_INVALIDATE);
+		write(sharedMem, &gX, WRITESIZE);
+		sync()
 
 		sleep(0);
 	}

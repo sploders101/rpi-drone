@@ -8,7 +8,7 @@ let SteamController = require("node-steam-controller");
 
 // INITIALIZE VARS
 const fcRam = fs.openSync("/run/user/1000/mmapTest","r+");
-let cRam = Buffer.alloc(50);
+let cRam = Buffer.alloc(44);
 
 let projectDir = path.join(__dirname,"..");
 let sc = new SteamController();
@@ -20,23 +20,22 @@ let control = {
 };
 let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
-function sendControl() {
+function sync() {
 	cRam.writeFloatLE(control.throttle,0);
 	cRam.writeFloatLE(control.x,4);
 	cRam.writeFloatLE(control.y,8);
 	cRam.writeFloatLE(control.rotate,12);
-	fs.writeSync(fcRam,cRam,0,16,0);
-	cRam.writeFloatLE(calibration.x,32);
-	cRam.writeFloatLE(calibration.y,36);
-	cRam.writeFloatLE(calibration.sensors,40);
-	fs.writeSync(fcRam,cRam,32,12,32);
-	
+	cRam.writeFloatLE(calibration.x,16);
+	cRam.writeFloatLE(calibration.y,20);
+	cRam.writeFloatLE(calibration.sensors,24);
+	fs.writeSync(fcRam,cRam,0,28,0);
+	fs.readSync(fcRam,cRam,28,16,28);
 }
 
 // SETUP STEAM CONTROLLER INPUT
 sc.lpad.on("touch",() => {
 	control.throttle = 0.085;
-	sendControl();
+	sync();
 });
 sc.lpad.on("move",(e) => {
 	if(e.normy/2+0.5 < 0.085) {
@@ -44,30 +43,30 @@ sc.lpad.on("move",(e) => {
 	} else {
 		control.throttle = e.normy/2+0.5;
 	}
-	sendControl();
+	sync();
 });
 sc.lpad.on("untouch",() => {
 	control.throttle = 0;
-	sendControl();
+	sync();
 });
 // sc.rpad.on("touch",() => {
 // 	control.throttle = 0.085;
-// 	sendControl();
+// 	sync();
 // });
 sc.rpad.on("move",(e) => {
 	control.x = e.normx;
 	control.y = e.normy;
-	sendControl();
+	sync();
 });
 sc.rpad.on("untouch",() => {
 	control.x = 0;
 	control.y = 0;
-	sendControl();
+	sync();
 });
 sc.x.on('press',() => {
-	calibration.x = cRam.readFloatLE(16);
-	calibration.y = cRam.readFloatLE(20);
-	sendControl();
+	calibration.x = cRam.readFloatLE(28);
+	calibration.y = cRam.readFloatLE(32);
+	sync();
 });
 sc.back.on('press',() => {
 
