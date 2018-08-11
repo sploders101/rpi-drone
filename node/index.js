@@ -3,18 +3,12 @@
 
 // IMPORTS
 let fs = require("fs");
-let mmap = require("mmap.js");
 let path = require("path");
 let SteamController = require("node-steam-controller");
 
 // INITIALIZE VARS
-const fd = fs.openSync("/run/user/1000/mmapTest","r+");
-let cRam = mmap.alloc(
-    50,
-    mmap.PROT_READ | mmap.PROT_WRITE,
-    mmap.MAP_SHARED,
-    fd,
-    0);
+const fcRam = fs.openSync("/run/user/1000/mmapTest","r+");
+let cRam = Buffer.alloc(50);
 
 let projectDir = path.join(__dirname,"..");
 let sc = new SteamController();
@@ -27,17 +21,16 @@ let control = {
 let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
 function sendControl() {
-	mmap.sync(cRam, 0, 50, mmap.MS_SYNC);
-	console.log(cRam.readFloatLE(16));
 	cRam.writeFloatLE(control.throttle,0);
 	cRam.writeFloatLE(control.x,4);
 	cRam.writeFloatLE(control.y,8);
 	cRam.writeFloatLE(control.rotate,12);
+	fs.writeSync(fcRam,cRam,0,16,0);
 	cRam.writeFloatLE(calibration.x,32);
 	cRam.writeFloatLE(calibration.y,36);
 	cRam.writeFloatLE(calibration.sensors,40);
-	console.log(cRam.readFloatLE(40));
-	mmap.sync(cRam, 0, 50, mmap.MS_SYNC);
+	fs.writeSync(fcRam,cRam,32,12,32);
+	
 }
 
 // SETUP STEAM CONTROLLER INPUT
