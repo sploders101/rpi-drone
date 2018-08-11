@@ -39,9 +39,8 @@ function sendControl() {
 }
 function syncRam() {
 	mmap.sync(cRam, 0, mmap.PAGE_SIZE, mmap.MS_SYNC);
-	process.nextTick(syncRam);
 }
-syncRam();
+setInterval(syncRam,10);
 
 // SETUP STEAM CONTROLLER INPUT
 sc.lpad.on("touch",() => {
