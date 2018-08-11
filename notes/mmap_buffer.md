@@ -2,7 +2,7 @@
 
 |I/O|Offset|Size (bytes)|Type|Name|Expanded Name|
 |---|---|---|---|---|---|
-|I|0|2|int|throttle|Throttle|
+|I|0|2|uint|throttle|Throttle|
 |I|2|2|int|moveX|X direction move speed|
 |I|4|2|int|moveY|Y direction move speed|
 |I|6|2|int|moveRot|Clockwise rotational move speed|

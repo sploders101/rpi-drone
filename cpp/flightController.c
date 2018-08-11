@@ -10,6 +10,9 @@
 #define MMAPSIZE 22
 #define MMAPLOCATION "/run/user/1000/mmapTest"
 
+#define PCA9685 0x40
+#define CH0 0x08
+
 // Declare memory mapped variables
 int sharedMem;
 void *mappedBuffer;
@@ -35,7 +38,8 @@ int main() {
 	mappedBuffer = mmap(NULL,2048,PROT_READ | PROT_WRITE, MAP_SHARED,sharedMem,0);
 
 	// Setup memory locations
-	throttle = (short *) mappedBuffer;
+	// throttle = (short *) mappedBuffer;
+	throttle = (unsigned short *) mappedBuffer;
 	moveX = (short *) mappedBuffer + ( sizeof(short) * 1 );
 	moveY = (short *) mappedBuffer + ( sizeof(short) * 2 );
 	moveRot = (short *) mappedBuffer + ( sizeof(short) * 3);
@@ -49,11 +53,15 @@ int main() {
 
 	// Setup I2C devices
 	int gyro = wiringPiI2CSetup(GYROADDR);
+	int mtr = wiringPiI2CSetup(PCA9685);
 
 	while(1) {
 		*gX = wiringPiI2CReadReg16(gyro,GYROX);
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		std::cout << *gX << " " << *gY << "\n";
+
+		wiringPiI2CWriteReg16(mtr,CH0,*throttle);
+
 		sleep(0);
 	}
 
