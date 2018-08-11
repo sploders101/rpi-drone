@@ -17,14 +17,11 @@
 #define PWMMIN 200
 #define PWMMAX 500
 #define SENSORDIV *sensorMult
-
 #define PCA9685 0x40
 #define PWMFREQ 50
 #define CH0 300
-#define CH1 301
-#define CH2 302
-#define CH3 303
 #define ARMSPEED 85
+#define SENSBUFLENGTH 10
 
 // Declare memory mapped variables
 int sharedMem;
@@ -73,14 +70,30 @@ int main() {
 	// sd_notify(0, "READY=1");
 
 	short motors[4];
+	short xSensor[SENSBUFLENGTH+1];
+	short ySensor[SENSBUFLENGTH+1];
+	long sumSensors;
 
 	while(1) {
 		sync();
 		lseek(sharedMem,0,SEEK_SET); // Go to inputs
 		read(sharedMem, &mappedBuffer, READSIZE); // Read inputs
 
-		*gX = wiringPiI2CReadReg16(gyro,GYROX);
-		*gY = wiringPiI2CReadReg16(gyro,GYROY);
+
+		xSensor[SENSBUFLENGTH] = wiringPiI2CReadReg16(gyro,GYROX);
+		ySensor[SENSBUFLENGTH] = wiringPiI2CReadReg16(gyro,GYROY);
+		sumSensors = 0;
+		for (size_t i = 0; i < SENSBUFLENGTH; i++) {
+			sumSensors += (long) xSensor[i+1];
+			xSensor[i] = xSensor[i+1];
+		}
+		sumSensors = 0;
+		for (size_t i = 0; i < SENSBUFLENGTH; i++) {
+			sumSensors += (long) ySensor[i+1];
+			ySensor[i] = ySensor[i+1];
+		}
+		*gX = sumSensors / SENSBUFLENGTH;
+		*gY = sumSensors / SENSBUFLENGTH;
 
 		// std::cout << *gX << " " << *gY << "\n";
 
@@ -92,10 +105,10 @@ int main() {
 		motors[2] = ( y/2) + (-x/2) + (( *moveX / (1000 - *throttle))/2) + (( *moveY / (1000 - *throttle))/2) + ( *moveRot/2) + (*throttle);
 		motors[3] = (-y/2) + (-x/2) + ((-*moveX / (1000 - *throttle))/2) + (( *moveY / (1000 - *throttle))/2) + (-*moveRot/2) + (*throttle);
 
-		for (char i = 0; i < 4; i++) {
+		for (size_t i = 0; i < 4; i++) {
 			if(motors[i] > 1000) {
 				short offset = motors[i] - 1000;
-				for (char j = 0; j < 4; j++) {
+				for (size_t j = 0; j < 4; j++) {
 					motors[j] -= offset;
 					if(motors[j] < 0) {
 						motors[j] = ARMSPEED;
@@ -106,9 +119,9 @@ int main() {
 			}
 		}
 
-		std::cout << *throttle << "\t" << x << "\t" << y << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
+//		std::cout << *throttle << "\t" << x << "\t" << y << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
 
-		for (char i = 0; i < 4; i++) {
+		for (size_t i = 0; i < 4; i++) {
 			if(*throttle >= ARMSPEED) {
 				pwmWrite((CH0 + i),motors[i]/3 + PWMMIN);
 			} else {
@@ -118,8 +131,6 @@ int main() {
 
 		write(sharedMem, gX, WRITESIZE);
 		sync();
-
-		sleep(0);
 	}
 
 
