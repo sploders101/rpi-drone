@@ -58,7 +58,6 @@ int main() {
 
 	// sd_notify(0, "READY=1");
 
-	float motors[4];
 
 	while(1) {
 		*sensorMult = 1;
