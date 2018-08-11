@@ -53,7 +53,7 @@ int main() {
 	while(1) {
 		*gX = wiringPiI2CReadReg16(gyro,GYROX);
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
-		std::cout << *gX << "\n";
+		std::cout << *gX << " " << *gY << "\n";
 		sleep(0);
 	}
 
