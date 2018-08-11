@@ -12,7 +12,8 @@
 #define MMAPLOCATION "/run/user/1000/mmapTest"
 
 #define PCA9685 0x40
-#define CH0 0x08
+#define PWMFREQ 50
+#define CH0 300
 
 // Declare memory mapped variables
 int sharedMem;
@@ -54,9 +55,10 @@ int main() {
 
 	// Setup I2C devices
 	int gyro = wiringPiI2CSetup(GYROADDR);
-	int mtr = wiringPiI2CSetup(PCA9685);
+	int mtr = pca9685Setup(CH0, 0x40, PWMFREQ);
 
 	// Initialize devices
+	wiringPiSetup();
 	pca9685PWMReset(mtr);
 
 	while(1) {
@@ -64,8 +66,7 @@ int main() {
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		std::cout << *gX << " " << *gY << "\n";
 
-		// wiringPiI2CWriteReg16(mtr,CH0,*throttle);
-		pca9685PWMWrite(mtr,0,0,*throttle);
+		pwmWrite(CH0,*throttle);
 
 		sleep(0);
 	}
