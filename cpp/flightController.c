@@ -101,6 +101,8 @@ int main() {
 
 		std::cout << *sensorMult << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
 
+		msync(mappedBuffer, MMAPSIZE, MS_SYNC | MS_INVALIDATE);
+
 		sleep(0);
 	}
 
