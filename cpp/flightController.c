@@ -77,8 +77,8 @@ int main() {
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		// std::cout << *gX << " " << *gY << "\n";
 
-		float x = ((float) *gX - *cX) / 32767 * *sensorMult;
-		float y = ((float) *gY - *cY) / 32767 * *sensorMult;
+		float x = ((float) *gX - *cX) / 32767 * (*sensorMult);
+		float y = ((float) *gY - *cY) / 32767 * (*sensorMult);
 
 		motors[0] = ( y/2) + ( x/2) + ( *moveX/2) + (-*moveY/2) + (-*moveRot/2) + (*throttle);
 		motors[1] = (-y/2) + ( x/2) + (-*moveX/2) + (-*moveY/2) + ( *moveRot/2) + (*throttle);
