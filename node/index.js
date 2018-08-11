@@ -59,6 +59,20 @@ sc.lpad.on("untouch",() => {
 	control.throttle = 0;
 	sendControl();
 });
+// sc.rpad.on("touch",() => {
+// 	control.throttle = 0.085;
+// 	sendControl();
+// });
+sc.rpad.on("move",(e) => {
+	control.x = e.normx;
+	control.y = e.normy;
+	sendControl();
+});
+sc.rpad.on("untouch",() => {
+	control.x = 0;
+	control.y = 0;
+	sendControl();
+});
 sc.x.on('press',() => {
 	calibration.x = cRam.readFloatLE(16);
 	calibration.y = cRam.readFloatLE(20);
