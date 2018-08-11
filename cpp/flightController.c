@@ -16,7 +16,7 @@
 // Declare memory mapped variables
 int sharedMem;
 void *mappedBuffer;
-short *throttle;
+unsigned short *throttle;
 short *moveX;
 short *moveY;
 short *moveRot;
