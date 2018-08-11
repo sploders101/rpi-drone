@@ -22,8 +22,8 @@ let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`)
 
 function sync() {
 	cRam.writeInt16LE(control.throttle*1000,0);
-	cRam.writeInt16LE(control.x*1000,2);
-	cRam.writeInt16LE(control.y*1000,4);
+	cRam.writeInt16LE(control.y*1000,2);
+	cRam.writeInt16LE(control.x*1000,4);
 	cRam.writeInt16LE(control.rotate*1000,6);
 	cRam.writeInt16LE(calibration.x,8);
 	cRam.writeInt16LE(calibration.y,10);
@@ -69,19 +69,19 @@ sc.x.on('press',() => {
 	sync();
 });
 sc.back.on('press',() => {
-	calibration.x -= 1;
+	calibration.y -= 1;
 	sync();
 });
 sc.forward.on('press',() => {
-	calibration.x += 1;
-	sync();
-});
-sc.y.on('press',() => {
 	calibration.y += 1;
 	sync();
 });
+sc.y.on('press',() => {
+	calibration.x += 1;
+	sync();
+});
 sc.a.on('press',() => {
-	calibration.y -= 1;
+	calibration.x -= 1;
 	sync();
 });
 sc.connect();
