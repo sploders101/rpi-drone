@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <wiringPiI2C.h>
+#include <pca9685.h>
 
 #define GYROADDR 0x1c
 #define GYROX 0x28
@@ -55,12 +56,16 @@ int main() {
 	int gyro = wiringPiI2CSetup(GYROADDR);
 	int mtr = wiringPiI2CSetup(PCA9685);
 
+	// Initialize devices
+	pca9685PWMReset(mtr);
+
 	while(1) {
 		*gX = wiringPiI2CReadReg16(gyro,GYROX);
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		std::cout << *gX << " " << *gY << "\n";
 
-		wiringPiI2CWriteReg16(mtr,CH0,*throttle);
+		// wiringPiI2CWriteReg16(mtr,CH0,*throttle);
+		pca9685PWMWrite(mtr,0,0,*throttle);
 
 		sleep(0);
 	}
