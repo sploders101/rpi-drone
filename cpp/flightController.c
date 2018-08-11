@@ -25,7 +25,7 @@
 // Declare memory mapped variables
 int sharedMem;
 void *mappedBuffer;
-unsigned float *throttle;
+float *throttle;
 float *moveX;
 float *moveY;
 float *moveRot;
@@ -99,7 +99,7 @@ int main() {
 			}
 		}
 
-		cout << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
+		std::cout << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
 
 		sleep(0);
 	}
