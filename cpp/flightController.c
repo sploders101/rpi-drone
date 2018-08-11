@@ -1,8 +1,8 @@
-#include <iostream> // Print statements (cout << ...)
+#include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/mman.h> // mmap
-#include <wiringPiI2C.h> // i2c libraries
+#include <sys/mman.h>
+#include <wiringPiI2C.h>
 
 #define GYROADDR 0x1c
 #define GYROX 0x28
