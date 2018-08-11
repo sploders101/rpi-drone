@@ -72,11 +72,11 @@ sc.x.on('press',() => {
 	sync();
 });
 sc.back.on('press',() => {
-	calibration.y -= 10;
+	calibration.y += 1;
 	sync();
 });
 sc.forward.on('press',() => {
-	calibration.y += 10;
+	calibration.y -= 1;
 	sync();
 });
 sc.y.on('press',() => {
