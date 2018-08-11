@@ -36,6 +36,11 @@ function sendControl() {
 	cRam.writeFloatLE(calibration.y,36);
 	cRam.writeFloatLE(calibration.sensors,40);
 }
+function syncRam() {
+	mmap.sync(cRam, 0, mmap.PAGE_SIZE, mmap.MS_SYNC);
+	process.nextTick(syncRam);
+}
+syncRam();
 
 // SETUP STEAM CONTROLLER INPUT
 sc.lpad.on("touch",() => {
