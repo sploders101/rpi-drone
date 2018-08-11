@@ -53,7 +53,7 @@ int main() {
 	moveX = (short *) &mappedBuffer + ( sizeof(short) * 1 );
 	moveY = (short *) &mappedBuffer + ( sizeof(short) * 2 );
 	moveRot = (short *) &mappedBuffer + ( sizeof(short) * 3);
-	cX = (short *) &mappedBuffer + ( sizeof(short) * sizeof(short));
+	cX = (short *) &mappedBuffer + ( sizeof(short) * 4);
 	cY = (short *) &mappedBuffer + ( sizeof(short) * 5);
 	// sensorMult = (short *) &mappedBuffer + ( sizeof(short) * 6);
 	gX = (short *) &mappedBuffer + ( sizeof(short) * 7);
