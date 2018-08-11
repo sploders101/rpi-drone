@@ -85,10 +85,10 @@ int main() {
 		short x = (*gX - *cX) / 33 / (SENSORDIV);
 		short y = (*gY - *cY) / 33 / (SENSORDIV);
 
-		motors[0] = ( y/2) + ( x/2) + (( *moveX / (1000 / *throttle))/2) + ((-*moveY / (1000 / *throttle))/2) + (-*moveRot/2) + (*throttle);
-		motors[1] = (-y/2) + ( x/2) + ((-*moveX / (1000 / *throttle))/2) + ((-*moveY / (1000 / *throttle))/2) + ( *moveRot/2) + (*throttle);
-		motors[2] = ( y/2) + (-x/2) + (( *moveX / (1000 / *throttle))/2) + (( *moveY / (1000 / *throttle))/2) + ( *moveRot/2) + (*throttle);
-		motors[3] = (-y/2) + (-x/2) + ((-*moveX / (1000 / *throttle))/2) + (( *moveY / (1000 / *throttle))/2) + (-*moveRot/2) + (*throttle);
+		motors[0] = ( y/2) + ( x/2) + (( *moveX / (1000 - *throttle))/2) + ((-*moveY / (1000 - *throttle))/2) + (-*moveRot/2) + (*throttle);
+		motors[1] = (-y/2) + ( x/2) + ((-*moveX / (1000 - *throttle))/2) + ((-*moveY / (1000 - *throttle))/2) + ( *moveRot/2) + (*throttle);
+		motors[2] = ( y/2) + (-x/2) + (( *moveX / (1000 - *throttle))/2) + (( *moveY / (1000 - *throttle))/2) + ( *moveRot/2) + (*throttle);
+		motors[3] = (-y/2) + (-x/2) + ((-*moveX / (1000 - *throttle))/2) + (( *moveY / (1000 - *throttle))/2) + (-*moveRot/2) + (*throttle);
 
 		for (char i = 0; i < 4; i++) {
 			if(motors[i] > 1000) {
