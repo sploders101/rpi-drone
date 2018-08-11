@@ -103,7 +103,7 @@ int main() {
 			}
 		}
 
-		std::cout << *moveX << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
+		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << *sensorMult << "\n";
 
 		write(sharedMem, &gX, WRITESIZE);
 		sync();
