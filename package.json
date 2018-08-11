@@ -17,10 +17,9 @@
   },
   "homepage": "https://github.com/sploders101/rpi-drone#readme",
   "dependencies": {
+    "mmap.js": "^1.0.3",
     "node-steam-controller": "^0.1.2",
-    "sd-notify": "^2.3.0",
-	"i2c-bus": "^4.0.1",
-	"pca9685": "^4.0.3",
-	"nodeaffinity": "0.1.0"
+    "nodeaffinity": "0.1.0",
+    "sd-notify": "^2.3.0"
   }
 }
