@@ -27,10 +27,11 @@ let control = {
 let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
 function sendControl() {
+	console.log(cRam.readFloatLE(16));
+	cRam.writeFloatLE(control.throttle,0);
 	cRam.writeFloatLE(control.x,4);
 	cRam.writeFloatLE(control.y,8);
 	cRam.writeFloatLE(control.rotate,12);
-	cRam.writeFloatLE(control.throttle,0);
 	cRam.writeFloatLE(calibration.x,32);
 	cRam.writeFloatLE(calibration.y,36);
 	cRam.writeFloatLE(calibration.sensors,40);
