@@ -104,7 +104,7 @@ int main() {
 			}
 		}
 
-		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORMULT << "\n";
+		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
 
 		for (char i = 0; i < 4; i++) {
 			pwmWrite((CH0 + i),motors[i]/3 + PWMMIN;
