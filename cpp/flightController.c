@@ -10,7 +10,7 @@
 #define GYROADDR 0x1c
 #define GYROX 0x28
 #define GYROY 0x2a
-#define MMAPSIZE 44
+#define MMAPSIZE 50
 #define MMAPLOCATION "/run/user/1000/mmapTest"
 #define PWMMIN 200
 #define PWMMAX 500
@@ -99,7 +99,7 @@ int main() {
 			}
 		}
 
-		std::cout << *throttle << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
+		std::cout << *sensorMult << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
 
 		sleep(0);
 	}

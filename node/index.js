@@ -10,7 +10,7 @@ let SteamController = require("node-steam-controller");
 // INITIALIZE VARS
 const fd = fs.openSync("/run/user/1000/mmapTest","r+");
 let cRam = mmap.alloc(
-    44,
+    50,
     mmap.PROT_READ | mmap.PROT_WRITE,
     mmap.MAP_SHARED,
     fd,
