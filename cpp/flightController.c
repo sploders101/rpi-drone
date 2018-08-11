@@ -105,6 +105,10 @@ int main() {
 
 		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << *sensorMult << "\n";
 
+		for (char i = 0; i < 4; i++) {
+			pwmWrite((CH0 + i),motors[i] * (PWMMAX-PWMMIN) + PWMMIN);
+		}
+
 		write(sharedMem, &gX, WRITESIZE);
 		sync();
 
