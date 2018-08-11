@@ -27,6 +27,7 @@ let control = {
 let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
 function sendControl() {
+	mmap.sync(cRam, 0, 50, mmap.MS_SYNC);
 	console.log(cRam.readFloatLE(16));
 	cRam.writeFloatLE(control.throttle,0);
 	cRam.writeFloatLE(control.x,4);
@@ -36,11 +37,8 @@ function sendControl() {
 	cRam.writeFloatLE(calibration.y,36);
 	cRam.writeFloatLE(calibration.sensors,40);
 	console.log(cRam.readFloatLE(40));
+	mmap.sync(cRam, 0, 50, mmap.MS_SYNC);
 }
-function syncRam() {
-	mmap.sync(cRam, 0, mmap.PAGE_SIZE, mmap.MS_SYNC);
-}
-setInterval(syncRam,10);
 
 // SETUP STEAM CONTROLLER INPUT
 sc.lpad.on("touch",() => {
