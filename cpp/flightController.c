@@ -16,7 +16,7 @@
 #define WRITESIZE 16
 #define PWMMIN 200
 #define PWMMAX 500
-#define SENSORDIV 10
+#define SENSORDIV 30
 
 #define PCA9685 0x40
 #define PWMFREQ 50
