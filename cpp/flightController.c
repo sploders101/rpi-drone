@@ -16,7 +16,7 @@
 #define WRITESIZE 8
 #define PWMMIN 200
 #define PWMMAX 500
-#define SENSORDIV 30
+#define SENSORDIV *sensorMult
 
 #define PCA9685 0x40
 #define PWMFREQ 50
@@ -84,8 +84,8 @@ int main() {
 
 		// std::cout << *gX << " " << *gY << "\n";
 
-		short x = (*gX - *cX) / 33 / (SENSORDIV);
-		short y = (*gY - *cY) / 33 / (SENSORDIV);
+		short x = (*gX - *cX) / 33 * (SENSORDIV);
+		short y = (*gY - *cY) / 33 * (SENSORDIV);
 
 		motors[0] = ( y/2) + ( x/2) + (( *moveX / (1000 - *throttle))/2) + ((-*moveY / (1000 - *throttle))/2) + (-*moveRot/2) + (*throttle);
 		motors[1] = (-y/2) + ( x/2) + ((-*moveX / (1000 - *throttle))/2) + ((-*moveY / (1000 - *throttle))/2) + ( *moveRot/2) + (*throttle);
@@ -106,7 +106,7 @@ int main() {
 			}
 		}
 
-		//std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
+		std::cout << *throttle << "\t" << x << "\t" << y << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
 
 		for (char i = 0; i < 4; i++) {
 			if(*throttle >= ARMSPEED) {

@@ -72,27 +72,27 @@ sc.x.on('press',() => {
 	sync();
 });
 sc.back.on('press',() => {
-	calibration.y -= 1;
+	calibration.y -= 10;
 	sync();
 });
 sc.forward.on('press',() => {
-	calibration.y += 1;
+	calibration.y += 10;
 	sync();
 });
 sc.y.on('press',() => {
-	calibration.x += 1;
+	calibration.x += 10;
 	sync();
 });
 sc.a.on('press',() => {
-	calibration.x -= 1;
+	calibration.x -= 10;
 	sync();
 });
 sc.lshoulder.on('press',() => {
-	calibration.z -= 1;
+	calibration.z -= 10;
 	sync();
 });
 sc.lshoulder.on('press',() => {
-	calibration.z += 1;
+	calibration.z += 10;
 	sync();
 });
 sc.connect();
