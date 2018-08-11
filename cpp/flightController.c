@@ -12,11 +12,11 @@
 #define GYROY 0x2a
 #define MMAPLOCATION "/run/user/1000/mmapTest"
 #define MMAPSIZE 44
-#define READSIZE 28
-#define WRITESIZE 16
+#define READSIZE 14
+#define WRITESIZE 8
 #define PWMMIN 200
 #define PWMMAX 500
-#define SENSORDIV 10
+#define SENSORDIV 30
 
 #define PCA9685 0x40
 #define PWMFREQ 50
