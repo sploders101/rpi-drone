@@ -2,35 +2,38 @@
 //NOTE: Higher-level computing for drone control
 
 // IMPORTS
-let {fork} = require("child_process");
+let fs = require("fs");
+let mmap = require("mmap.js");
 let path = require("path");
 let SteamController = require("node-steam-controller");
-let notify = require("sd-notify");
 
 // INITIALIZE VARS
+const fd = fs.openSync("/run/user/1000/mmapTest","r+");
+let cRam = mmap.alloc(
+    44,
+    mmap.PROT_READ | mmap.PROT_WRITE,
+    mmap.MAP_SHARED,
+    fd,
+    0);
+
 let projectDir = path.join(__dirname,"..");
 let sc = new SteamController();
 let control = {
-	_type: "control",
 	x: 0,
 	y: 0,
 	rotate: 0,
 	throttle: 0
 };
+let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
-let fc = fork(`${__dirname}/flightController.js`);
-fc.on("message", (msg) => {
-	switch(msg._type) {
-		case "status":
-			if(msg.value=="Ready.") {
-				notify.ready();
-				notify.startWatchdogMode(500);
-			}
-			break;
-	}
-});
 function sendControl() {
-	fc.send(control);
+	cRam.writeFloatLE(control.x,4);
+	cRam.writeFloatLE(control.y,8);
+	cRam.writeFloatLE(control.rotate,12);
+	cRam.writeFloatLE(control.throttle,0);
+	cRam.writeFloatLE(calibration.x,32);
+	cRam.writeFloatLE(calibration.y,36);
+	cRam.writeFloatLE(calibration.sensors,40);
 }
 
 // SETUP STEAM CONTROLLER INPUT
@@ -51,36 +54,20 @@ sc.lpad.on("untouch",() => {
 	sendControl();
 });
 sc.x.on('press',() => {
-	fc.send({
-		_type: "calibrate"
-	});
+	calibration.x = cRam.readFloatLE(16);
+	calibration.y = cRam.readFloatLE(20);
+	sendControl();
 });
 sc.back.on('press',() => {
-	fc.send({
-		_type: "trim",
-		x: -1,
-		y: 0
-	});
+
 });
 sc.forward.on('press',() => {
-	fc.send({
-		_type: "trim",
-		x: 1,
-		y: 0
-	});
+
 });
 sc.y.on('press',() => {
-	fc.send({
-		_type: "trim",
-		x: 0,
-		y: 1
-	});
+
 });
 sc.a.on('press',() => {
-	fc.send({
-		_type: "trim",
-		x: 0,
-		y: -1
-	});
+
 });
 sc.connect();

@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include <systemd/sd-daemon.h>
+// #include <systemd/sd-daemon.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <pca9685.h>
@@ -10,7 +10,7 @@
 #define GYROADDR 0x1c
 #define GYROX 0x28
 #define GYROY 0x2a
-#define MMAPSIZE 22
+#define MMAPSIZE 44
 #define MMAPLOCATION "/run/user/1000/mmapTest"
 #define PWMMIN 200
 #define PWMMAX 500
@@ -68,7 +68,7 @@ int main() {
 	wiringPiSetup();
 	pca9685PWMReset(mtr);
 
-	sd_notify(0, "READY=1");
+	// sd_notify(0, "READY=1");
 
 	float motors[4];
 
