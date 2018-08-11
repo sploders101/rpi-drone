@@ -43,8 +43,9 @@ int main() {
 	lseek(sharedMem,MMAPSIZE-1,SEEK_SET); // Stretch the file
 	write(sharedMem,"",1); // Write empty data to the end
 	sync(); // Sync to fs for node
+	lseek(sharedMem,0,SEEK_SET);
 
-	mappedBuffer = mmap(NULL,2048,PROT_READ | PROT_WRITE, MAP_SHARED,sharedMem,0);
+	mappedBuffer = mmap(NULL,MMAPSIZE,PROT_READ | PROT_WRITE, MAP_SHARED,sharedMem,0);
 
 	// Setup memory locations
 	// throttle = (float *) mappedBuffer;
