@@ -106,7 +106,7 @@ int main() {
 		std::cout << *moveX << "\t" << motors[0] << "\t" << motors[1] << "\t" << motors[2] << "\t" << motors[3] << "\n";
 
 		write(sharedMem, &gX, WRITESIZE);
-		sync()
+		sync();
 
 		sleep(0);
 	}
