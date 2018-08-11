@@ -1,3 +1,3 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-g++ -o "$DIR/fc" "$DIR/flightController.c" -L/usr/lib -lwiringPi -lwiringPiPca9685
+g++ -o "$DIR/fc" "$DIR/flightController.cpp" -L/usr/lib -lwiringPi -lwiringPiPca9685
