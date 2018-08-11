@@ -28,8 +28,8 @@ function sync() {
 	cRam.writeInt16LE(calibration.x,8);
 	cRam.writeInt16LE(calibration.y,10);
 	cRam.writeInt16LE(calibration.sensors,12);
-	fs.writeSync(fcRam,cRam,0,28,0);
-	fs.readSync(fcRam,cRam,28,16,28);
+	fs.writeSync(fcRam,cRam,0,12,0);
+	fs.readSync(fcRam,cRam,12,8,12);
 }
 
 // SETUP STEAM CONTROLLER INPUT
