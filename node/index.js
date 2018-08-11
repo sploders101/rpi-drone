@@ -24,7 +24,7 @@ function sync() {
 	cRam.writeInt16LE(control.throttle*1000,0);
 	cRam.writeInt16LE(control.y*1000,2);
 	cRam.writeInt16LE(control.x*1000,4);
-	cRam.writeInt16LE(control.rotate*1000,6);
+	cRam.writeInt16LE((control.rotate + calibration.z)*1000,6);
 	cRam.writeInt16LE(calibration.x,8);
 	cRam.writeInt16LE(calibration.y,10);
 	cRam.writeInt16LE(calibration.sensors,12);
@@ -82,6 +82,14 @@ sc.y.on('press',() => {
 });
 sc.a.on('press',() => {
 	calibration.x -= 1;
+	sync();
+});
+sc.lshoulder.on('press',() => {
+	calibration.z -= 1;
+	sync();
+});
+sc.lshoulder.on('press',() => {
+	calibration.z += 1;
 	sync();
 });
 sc.connect();
