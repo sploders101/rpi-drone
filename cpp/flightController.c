@@ -11,7 +11,7 @@
 #define GYROX 0x28
 #define GYROY 0x2a
 #define MMAPLOCATION "/run/user/1000/mmapTest"
-#define MMAPSIZE 44
+#define MMAPSIZE 22
 #define READSIZE 14
 #define WRITESIZE 8
 #define PWMMIN 200
@@ -39,6 +39,7 @@ short *gZ;
 short *bar;
 short *cX;
 short *cY;
+short *sensorMult;
 
 int main() {
 	// Setup mmap for sharing variables with node
@@ -50,16 +51,16 @@ int main() {
 	// Setup memory locations
 	// throttle = (float *) mappedBuffer;
 	throttle = (short *) &mappedBuffer;
-	moveX = (short *) &mappedBuffer + ( sizeof(short) * 1 );
-	moveY = (short *) &mappedBuffer + ( sizeof(short) * 2 );
-	moveRot = (short *) &mappedBuffer + ( sizeof(short) * 3);
-	cX = (short *) &mappedBuffer + ( sizeof(short) * 4);
-	cY = (short *) &mappedBuffer + ( sizeof(short) * 5);
-	// sensorMult = (short *) &mappedBuffer + ( sizeof(short) * 6);
-	gX = (short *) &mappedBuffer + ( sizeof(short) * 7);
-	gY = (short *) &mappedBuffer + ( sizeof(short) * 8);
-	gZ = (short *) &mappedBuffer + ( sizeof(short) * 9);
-	bar = (short *) &mappedBuffer + ( sizeof(short) * 10);
+	moveX = (short *) &mappedBuffer + ( 1 );
+	moveY = (short *) &mappedBuffer + ( 2 );
+	moveRot = (short *) &mappedBuffer + ( 3 );
+	cX = (short *) &mappedBuffer + ( 4 );
+	cY = (short *) &mappedBuffer + ( 5 );
+	sensorMult = (short *) &mappedBuffer + ( 6 );
+	gX = (short *) &mappedBuffer + ( 7 );
+	gY = (short *) &mappedBuffer + ( 8 );
+	gZ = (short *) &mappedBuffer + ( 9 );
+	bar = (short *) &mappedBuffer + ( 10 );
 
 	// Setup I2C devices
 	int gyro = wiringPiI2CSetup(GYROADDR);
@@ -80,6 +81,7 @@ int main() {
 
 		*gX = wiringPiI2CReadReg16(gyro,GYROX);
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
+
 		// std::cout << *gX << " " << *gY << "\n";
 
 		short x = (*gX - *cX) / 33 / (SENSORDIV);
