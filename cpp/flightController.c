@@ -114,7 +114,7 @@ int main() {
 			}
 		}
 
-		write(sharedMem, &gX, WRITESIZE);
+		write(sharedMem, gX, WRITESIZE);
 		sync();
 
 		sleep(0);
