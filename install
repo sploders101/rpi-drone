@@ -1,0 +1,28 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd "$DIR"
+
+# Install required modules for node
+npm i
+
+# Compile flight controller daemon
+## Install wiringPi
+git clone git://git.drogon.net/wiringPi
+cd "$DIR/wiringPi"
+./build uninstall
+./build clean
+./build
+
+## Install pca9685 devLib
+cd "$DIR"
+git clone https://github.com/Reinbert/pca9685.git
+cd "$DIR/pca9685"
+sudo make install
+
+## Compile C code
+cd "$DIR/cpp"
+./build
+cd "$DIR"
+
+# Install systemd service and enable running on startup
+# Coming soon!

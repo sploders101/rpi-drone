@@ -239,3 +239,9 @@ venv.bak/
 
 # Hidden Files
 .*
+
+# WiringPi
+/wiringPi
+
+#PCA9685 devLib
+/pca9685
