@@ -2,16 +2,16 @@
 
 |I/O|Offset|Size (bytes)|Type|Name|Expanded Name|
 |---|---|---|---|---|---|
-|I|0|4|float|throttle|Throttle|
-|I|4|4|float|moveX|X direction move speed|
-|I|8|4|float|moveY|Y direction move speed|
-|I|12|4|float|moveRot|Clockwise rotational move speed|
-|I|16|4|float|cX|Calibration X axis level|
-|I|20|4|float|cY|Calibration Y axis level|
-|I|24|4|float|sensorMult|Auto-level correction multiplier|
-|O|28|4|float|gX|Gyro X|
-|O|32|4|float|gY|Gyro Y|
-|O|36|4|float|gZ|Gyro Z|
-|O|40|4|float|bar|Barometer / Altimeter|
+|I|0|2|short|throttle|Throttle|
+|I|2|2|short|moveX|X direction move speed|
+|I|4|2|short|moveY|Y direction move speed|
+|I|6|2|short|moveRot|Clockwise rotational move speed|
+|I|8|2|short|cX|Calibration X axis level|
+|I|10|2|short|cY|Calibration Y axis level|
+|I|12|2|short|sensorMult|Auto-level correction multiplier|
+|O|14|2|short|gX|Gyro X|
+|O|16|2|short|gY|Gyro Y|
+|O|18|2|short|gZ|Gyro Z|
+|O|20|2|short|bar|Barometer / Altimeter|
 
-##Total size: 44B
+##Total size: 22B

@@ -21,13 +21,13 @@ let control = {
 let calibration = JSON.parse(fs.readFileSync(`${__dirname}/../calibration.json`));
 
 function sync() {
-	cRam.writeFloatLE(control.throttle,0);
-	cRam.writeFloatLE(control.x,4);
-	cRam.writeFloatLE(control.y,8);
-	cRam.writeFloatLE(control.rotate,12);
-	cRam.writeFloatLE(calibration.x,16);
-	cRam.writeFloatLE(calibration.y,20);
-	cRam.writeFloatLE(calibration.sensors,24);
+	cRam.writeInt16LE(control.throttle*1000,0);
+	cRam.writeInt16LE(control.x*1000,2);
+	cRam.writeInt16LE(control.y*1000,4);
+	cRam.writeInt16LE(control.rotate*1000,6);
+	cRam.writeInt16LE(calibration.x,8);
+	cRam.writeInt16LE(calibration.y,10);
+	cRam.writeInt16LE(calibration.sensors,12);
 	fs.writeSync(fcRam,cRam,0,28,0);
 	fs.readSync(fcRam,cRam,28,16,28);
 }
@@ -64,8 +64,8 @@ sc.rpad.on("untouch",() => {
 	sync();
 });
 sc.x.on('press',() => {
-	calibration.x = cRam.readFloatLE(28);
-	calibration.y = cRam.readFloatLE(32);
+	calibration.x = cRam.readInt16LE(14);
+	calibration.y = cRam.readInt16LE(16);
 	sync();
 });
 sc.back.on('press',() => {

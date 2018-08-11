@@ -16,6 +16,7 @@
 #define WRITESIZE 16
 #define PWMMIN 200
 #define PWMMAX 500
+#define SENSORDIV 10
 
 #define PCA9685 0x40
 #define PWMFREQ 50
@@ -23,21 +24,21 @@
 #define CH1 301
 #define CH2 302
 #define CH3 303
+#define ARMSPEED 85
 
 // Declare memory mapped variables
 int sharedMem;
 char mappedBuffer[MMAPSIZE];
-float *throttle;
-float *moveX;
-float *moveY;
-float *moveRot;
-float *gX;
-float *gY;
-float *gZ;
-float *bar;
-float *cX;
-float *cY;
-float *sensorMult;
+short *throttle;
+short *moveX;
+short *moveY;
+short *moveRot;
+short *gX;
+short *gY;
+short *gZ;
+short *bar;
+short *cX;
+short *cY;
 
 int main() {
 	// Setup mmap for sharing variables with node
@@ -48,17 +49,17 @@ int main() {
 
 	// Setup memory locations
 	// throttle = (float *) mappedBuffer;
-	throttle = (float *) &mappedBuffer;
-	moveX = (float *) &mappedBuffer + ( sizeof(float) * 1 );
-	moveY = (float *) &mappedBuffer + ( sizeof(float) * 2 );
-	moveRot = (float *) &mappedBuffer + ( sizeof(float) * 3);
-	cX = (float *) &mappedBuffer + ( sizeof(float) * 4);
-	cY = (float *) &mappedBuffer + ( sizeof(float) * 5);
-	sensorMult = (float *) &mappedBuffer + ( sizeof(float) * 6);
-	gX = (float *) &mappedBuffer + ( sizeof(float) * 7);
-	gY = (float *) &mappedBuffer + ( sizeof(float) * 8);
-	gZ = (float *) &mappedBuffer + ( sizeof(float) * 9);
-	bar = (float *) &mappedBuffer + ( sizeof(float) * 10);
+	throttle = (short *) &mappedBuffer;
+	moveX = (short *) &mappedBuffer + ( sizeof(short) * 1 );
+	moveY = (short *) &mappedBuffer + ( sizeof(short) * 2 );
+	moveRot = (short *) &mappedBuffer + ( sizeof(short) * 3);
+	cX = (short *) &mappedBuffer + ( sizeof(short) * sizeof(short));
+	cY = (short *) &mappedBuffer + ( sizeof(short) * 5);
+	// sensorMult = (short *) &mappedBuffer + ( sizeof(short) * 6);
+	gX = (short *) &mappedBuffer + ( sizeof(short) * 7);
+	gY = (short *) &mappedBuffer + ( sizeof(short) * 8);
+	gZ = (short *) &mappedBuffer + ( sizeof(short) * 9);
+	bar = (short *) &mappedBuffer + ( sizeof(short) * 10);
 
 	// Setup I2C devices
 	int gyro = wiringPiI2CSetup(GYROADDR);
@@ -70,7 +71,7 @@ int main() {
 
 	// sd_notify(0, "READY=1");
 
-	float motors[4];
+	short motors[4];
 
 	while(1) {
 		sync();
@@ -81,8 +82,8 @@ int main() {
 		*gY = wiringPiI2CReadReg16(gyro,GYROY);
 		// std::cout << *gX << " " << *gY << "\n";
 
-		float x = ((float) *gX - *cX) / 32767 * (*sensorMult);
-		float y = ((float) *gY - *cY) / 32767 * (*sensorMult);
+		short x = (*gX - *cX) / 33 / (SENSORDIV);
+		short y = (*gY - *cY) / 33 / (SENSORDIV);
 
 		motors[0] = ( y/2) + ( x/2) + ( *moveX/2) + (-*moveY/2) + (-*moveRot/2) + (*throttle);
 		motors[1] = (-y/2) + ( x/2) + (-*moveX/2) + (-*moveY/2) + ( *moveRot/2) + (*throttle);
@@ -90,23 +91,23 @@ int main() {
 		motors[3] = (-y/2) + (-x/2) + (-*moveX/2) + ( *moveY/2) + (-*moveRot/2) + (*throttle);
 
 		for (char i = 0; i < 4; i++) {
-			if(motors[i] > 1) {
-				float offset = motors[i] - 1;
+			if(motors[i] > 1000) {
+				short offset = motors[i] - 1000;
 				for (char j = 0; j < 4; j++) {
 					motors[j] -= offset;
 					if(motors[j] < 0) {
-						motors[j] = 0.085;
+						motors[j] = ARMSPEED;
 					}
 				}
 			} else if(motors[i] < 0) {
-				motors[i] = 0.085;
+				motors[i] = ARMSPEED;
 			}
 		}
 
-		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << *sensorMult << "\n";
+		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORMULT << "\n";
 
 		for (char i = 0; i < 4; i++) {
-			pwmWrite((CH0 + i),motors[i] * (PWMMAX-PWMMIN) + PWMMIN);
+			pwmWrite((CH0 + i),motors[i]/3 + PWMMIN;
 		}
 
 		write(sharedMem, &gX, WRITESIZE);
