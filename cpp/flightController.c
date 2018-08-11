@@ -104,10 +104,14 @@ int main() {
 			}
 		}
 
-		std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
+		//std::cout << *throttle << "\t" << *moveX << "\t" << *moveY << "\t" << *moveRot << "\t" << *cX << "\t" << *cY << "\t" << SENSORDIV << "\n";
 
 		for (char i = 0; i < 4; i++) {
-			pwmWrite((CH0 + i),motors[i]/3 + PWMMIN);
+			if(*throttle >= ARMSPEED) {
+				pwmWrite((CH0 + i),motors[i]/3 + PWMMIN);
+			} else {
+				pwmWrite((CH0 + i),PWMMIN);
+			}
 		}
 
 		write(sharedMem, &gX, WRITESIZE);
