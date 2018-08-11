@@ -69,15 +69,19 @@ sc.x.on('press',() => {
 	sync();
 });
 sc.back.on('press',() => {
-
+	calibration.x -= 1;
+	sync();
 });
 sc.forward.on('press',() => {
-
+	calibration.x += 1;
+	sync();
 });
 sc.y.on('press',() => {
-
+	calibration.y += 1;
+	sync();
 });
 sc.a.on('press',() => {
-
+	calibration.y -= 1;
+	sync();
 });
 sc.connect();
