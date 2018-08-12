@@ -82,17 +82,19 @@ int main() {
 
 		xSensor[SENSBUFLENGTH] = wiringPiI2CReadReg16(gyro,GYROX);
 		ySensor[SENSBUFLENGTH] = wiringPiI2CReadReg16(gyro,GYROY);
+		
 		sumSensors = 0;
 		for (size_t i = 0; i < SENSBUFLENGTH; i++) {
 			sumSensors += (long) xSensor[i+1];
 			xSensor[i] = xSensor[i+1];
 		}
+		*gX = sumSensors / SENSBUFLENGTH;
+
 		sumSensors = 0;
 		for (size_t i = 0; i < SENSBUFLENGTH; i++) {
 			sumSensors += (long) ySensor[i+1];
 			ySensor[i] = ySensor[i+1];
 		}
-		*gX = sumSensors / SENSBUFLENGTH;
 		*gY = sumSensors / SENSBUFLENGTH;
 
 		// std::cout << *gX << " " << *gY << "\n";
